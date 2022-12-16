@@ -109,7 +109,7 @@ SELECT * FROM update_user('oleshandr', null, null, 1);
 SELECT * FROM delete_user('oleshandra')
 
 DELETE FROM account WHERE account_login = 'olesha';
-DROP ROLE olesha;
+DROP ROLE oleshandra;
 
 DROP FUNCTION update_user(old_login VARCHAR(32),
 new_login VARCHAR(32),

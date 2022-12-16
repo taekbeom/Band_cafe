@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS profile CASCADE;
 DROP TABLE IF EXISTS shopping_cart CASCADE;
 DROP TABLE IF EXISTS shopping_order CASCADE;
 DROP TABLE IF EXISTS song CASCADE;
+DROP TABLE IF EXISTS member_profile CASCADE;
 
 CREATE TABLE account_role(
     role_id NUMERIC(1) PRIMARY KEY,
@@ -101,7 +102,7 @@ CREATE TABLE member_profile(
     member_id VARCHAR(12) NOT NULL REFERENCES member(member_id),
     profile_id VARCHAR(10) NOT NULL REFERENCES profile(profile_id),
     PRIMARY KEY (member_id, profile_id)
-)
+);
 
 CREATE TABLE position(
     position_code NUMERIC(2) PRIMARY KEY,
@@ -148,7 +149,7 @@ CREATE TABLE post(
     post_date DATE NOT NULL,
     post_image_source TEXT,
     forum_id VARCHAR(10) NOT NULL REFERENCES forum(forum_id) ON UPDATE CASCADE,
-    author_login VARCHAR(32) NOT NULL REFERENCES account(account_login),
+    author_login VARCHAR(32) REFERENCES account(account_login),
     reply_post_id VARCHAR(32) REFERENCES post(post_id) ON UPDATE CASCADE,
     category_id NUMERIC(2) REFERENCES post_category(category_id) ON UPDATE CASCADE
 );

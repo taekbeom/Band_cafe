@@ -28,8 +28,26 @@ BEGIN
     END IF;
 END;$$;
 
+CREATE OR REPLACE FUNCTION delete_author()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE post
+    SET author_login = NULL WHERE author_login = OLD.account_login;
+    RETURN NULL;
+END;$$;
+
+CREATE OR REPLACE TRIGGER delete_author_trigger
+BEFORE DELETE ON account
+FOR EACH ROW
+EXECUTE FUNCTION delete_author();
+
 CALL add_post('fr00010001', 'oleshandra',
     'asfsa');
+
+DROP TRIGGER delete_author_trigger ON account;
+DROP FUNCTION delete_author();
 
 SELECT * FROM post;
 
