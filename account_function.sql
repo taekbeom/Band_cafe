@@ -105,10 +105,12 @@ END;$$;
 
 SELECT * FROM add_user('oleshandra', 'popovich');
 SELECT * FROM account;
+DELETE FROM account;
 SELECT * FROM update_user('oleshandr', null, null, 1);
-SELECT * FROM delete_user('oleshandra')
+SELECT * FROM delete_user('oleshandra');
 
-DELETE FROM account WHERE account_login = 'olesha';
+DELETE FROM account WHERE account_login = 'oleshandra';
+DROP TABLE account;
 DROP ROLE oleshandra;
 
 DROP FUNCTION update_user(old_login VARCHAR(32),
