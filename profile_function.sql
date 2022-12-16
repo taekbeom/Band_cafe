@@ -1,8 +1,7 @@
-CREATE OR REPLACE FUNCTION update_profile(upd_account_login VARCHAR(32),
+CREATE OR REPLACE PROCEDURE update_profile(upd_account_login VARCHAR(32),
 new_profile_avatar TEXT DEFAULT NULL,
 new_profile_string_date TEXT DEFAULT NULL,
 new_profile_description VARCHAR(64) DEFAULT NULL)
-RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS $$
     DECLARE new_profile_date DATE;
@@ -20,42 +19,35 @@ BEGIN
     profile_description = COALESCE(new_profile_description,
         profile_description)
     WHERE account_login = upd_account_login;
-    RETURN TRUE;
 END;$$;
 
-CREATE OR REPLACE FUNCTION delete_avatar(upd_account_login VARCHAR(32))
-RETURNS BOOLEAN
+CREATE OR REPLACE PROCEDURE delete_avatar(upd_account_login VARCHAR(32))
 LANGUAGE plpgsql
 AS $$
 BEGIN
     UPDATE profile SET profile_avatar_source = NULL
     WHERE account_login = upd_account_login;
-    RETURN TRUE;
 END;$$;
 
-CREATE OR REPLACE FUNCTION delete_description(upd_account_login VARCHAR(32))
-RETURNS BOOLEAN
+CREATE OR REPLACE PROCEDURE delete_description(upd_account_login VARCHAR(32))
 LANGUAGE plpgsql
 AS $$
 BEGIN
     UPDATE profile SET profile_description = NULL
     WHERE account_login = upd_account_login;
-    RETURN TRUE;
 END;$$;
 
-CREATE OR REPLACE FUNCTION delete_date(upd_account_login VARCHAR(32))
-RETURNS BOOLEAN
+CREATE OR REPLACE PROCEDURE delete_date(upd_account_login VARCHAR(32))
 LANGUAGE plpgsql
 AS $$
 BEGIN
     UPDATE profile SET profile_date_of_birth = NULL
     WHERE account_login = upd_account_login;
-    RETURN TRUE;
 END;$$;
 
-SELECT update_profile('oleshandra', 'aa', '2021-12-15');
-SELECT delete_avatar('olleg');
-SELECT delete_date('oleshandra');
+CALL update_profile('oleshandra', 'on', '2010-01-15');
+CALL delete_avatar('oleshandra');
+SELECT delete_date('');
 
 
 (SELECT account.account_login FROM account

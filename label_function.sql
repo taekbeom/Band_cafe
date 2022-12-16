@@ -1,11 +1,10 @@
-CREATE OR REPLACE FUNCTION add_label(new_label_name VARCHAR(128),
+CREATE OR REPLACE PROCEDURE add_label(new_label_name VARCHAR(128),
 new_label_director VARCHAR(128),
 new_label_country VARCHAR(64),
 new_label_city VARCHAR(64),
 new_label_main_address TEXT,
 new_label_string_date TEXT,
 new_label_description TEXT)
-RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS $$
     DECLARE new_label_id_country VARCHAR(64);
@@ -28,25 +27,21 @@ BEGIN
     IF (is_date(new_label_string_date) AND
         to_date(new_label_string_date, 'yyyy-mm-dd') IS NOT NULL) THEN
         new_label_date := to_date(new_label_string_date, 'yyyy-mm-dd');
-    ELSE
-        RETURN FALSE;
-    END IF;
-    INSERT INTO group_label
+        INSERT INTO group_label
     VALUES (concat('lb', digit_id, substring(upper(new_label_id_country) FROM 1 FOR 2)),
             new_label_name, new_label_director, new_label_country,
             new_label_city, new_label_main_address, new_label_date,
             new_label_description);
-    RETURN TRUE;
+    END IF;
 END;$$;
 
-CREATE OR REPLACE FUNCTION update_label(upd_label_id VARCHAR(8),
+CREATE OR REPLACE PROCEDURE update_label(upd_label_id VARCHAR(8),
 new_label_name VARCHAR(128) DEFAULT NULL,
 new_label_director VARCHAR(128) DEFAULT NULL,
 new_label_country VARCHAR(64) DEFAULT NULL,
 new_label_city VARCHAR(64) DEFAULT NULL,
 new_label_address TEXT DEFAULT NULL,
 new_label_description TEXT DEFAULT NULL)
-RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS $$
     DECLARE new_label_id_country VARCHAR(64);
@@ -69,14 +64,13 @@ BEGIN
         upper(substring(new_label_id_country FROM 1 FOR 2)))
     WHERE label_id = upd_label_id;
     END IF;
-    RETURN TRUE;
 END;$$;
 
-SELECT * FROM add_label('JYP', 'J Y Park', 'South Korea', 'Seoul', 'asfsa', '2010-04-03', 'sada');
+CALL add_label('JYP', 'J Y Park', 'South Korea', 'Seoul', 'asfsa', '2010-04-03', 'sada');
 SELECT * FROM group_label
 DELETE FROM group_label;
 
-SELECT update_label('lb0002KO', 'SM', 'bp', 'JAPAN');
+CALL update_label('lb0001KO', 'SM', 'bp', 'JAPAN');
 
 DROP FUNCTION add_label(new_label_name VARCHAR(128),
 new_label_director VARCHAR(128),

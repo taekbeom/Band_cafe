@@ -34,10 +34,9 @@ CREATE OR REPLACE TRIGGER add_forum_trigger
     FOR EACH ROW
     EXECUTE FUNCTION add_forum();
 
-CREATE OR REPLACE FUNCTION update_forum(upd_forum_id VARCHAR(10),
+CREATE OR REPLACE PROCEDURE update_forum(upd_forum_id VARCHAR(10),
 new_forum_name TEXT DEFAULT NULL,
 new_forum_description VARCHAR(64) DEFAULT NULL)
-RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS $$
 BEGIN
@@ -45,11 +44,14 @@ BEGIN
     SET forum_name = COALESCE(new_forum_name, forum_name),
     forum_description = COALESCE(new_forum_description, forum_description)
     WHERE forum_id = upd_forum_id;
-    RETURN TRUE;
 END;$$;
 
 
-SELECT update_forum('fr00010001', NULL, 'konnichiwa');
+CALL update_forum('fr00010001', NULL, 'konnichiwa');
 
 SELECT * FROM forum;
 DELETE FROM forum;
+
+DROP FUNCTION update_forum(upd_forum_id VARCHAR(10),
+new_forum_name TEXT,
+new_forum_description VARCHAR(64))

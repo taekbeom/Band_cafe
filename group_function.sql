@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION add_group(new_group_name VARCHAR(128),
+CREATE OR REPLACE PROCEDURE add_group(new_group_name VARCHAR(128),
                                      new_group_country VARCHAR(64),
                                      new_group_debut TEXT,
                                      new_group_fandom_name VARCHAR(128),
@@ -6,7 +6,6 @@ CREATE OR REPLACE FUNCTION add_group(new_group_name VARCHAR(128),
                                      manager_login VARCHAR(32),
                                      label_id VARCHAR(8),
                                      new_group_disband TEXT DEFAULT NULL)
-    RETURNS BOOLEAN
     LANGUAGE plpgsql
 AS
 $$
@@ -28,35 +27,33 @@ BEGIN
     IF (is_date(new_group_debut) AND
         to_date(new_group_debut, 'yyyy-mm-dd') IS NOT NULL) THEN
         new_group_debut_date := to_date(new_group_debut, 'yyyy-mm-dd');
-    ELSE
-        RETURN FALSE;
+        ELSE
+        new_group_debut_date := NULL;
     END IF;
     IF (is_date(new_group_disband)) THEN
         new_group_disband_date := to_date(new_group_disband, 'yyyy-mm-dd');
     ELSE
-        RETURN FALSE;
+        new_group_disband_date := NULL;
     END IF;
     IF (SELECT COUNT(*) FROM account
-                        WHERE account_login = manager_login) = 0 THEN
-        RETURN FALSE;
-    END IF;
-    INSERT INTO member_group
+                        WHERE account_login = manager_login) = 1
+        AND new_group_debut_date IS NOT NULL THEN
+        INSERT INTO member_group
     VALUES (concat('gr', substring(label_id FROM 3 FOR 4), digit_id),
             new_group_name, new_group_country, new_group_debut_date,
             new_group_disband_date, new_group_fandom_name,
             new_group_description, manager_login);
-    RETURN TRUE;
+    END IF;
 END;
 $$;
 
-CREATE OR REPLACE FUNCTION update_group(upd_group_id VARCHAR(10),
+CREATE OR REPLACE PROCEDURE update_group(upd_group_id VARCHAR(10),
 new_group_name VARCHAR(128) DEFAULT NULL,
 new_group_fandom_name VARCHAR(128) DEFAULT NULL,
 new_group_description TEXT DEFAULT NULL,
 manager_login VARCHAR(32) DEFAULT NULL,
 new_label_id VARCHAR(8) DEFAULT NULL,
 new_group_disband TEXT DEFAULT NULL)
-RETURNS BOOLEAN
 LANGUAGE plpgsql
 AS $$
 DECLARE new_group_disband_date DATE;
@@ -64,12 +61,12 @@ BEGIN
         IF (is_date(new_group_disband)) THEN
             new_group_disband_date := to_date(new_group_disband, 'yyyy-mm-dd');
         ELSE
-            RETURN FALSE;
+            new_group_disband_date := NULL;
         END IF;
         IF (manager_login IS NOT NULL) AND
            (SELECT COUNT(*) FROM account
                             WHERE account_login = manager_login) = 0 THEN
-            RETURN FALSE;
+            manager_login := NULL;
         END IF;
     UPDATE member_group SET
     group_name = COALESCE(new_group_name, group_name),
@@ -87,12 +84,11 @@ BEGIN
             substring(upd_group_id FROM 7 FOR 4))
         WHERE group_id = upd_group_id;
     END IF;
-    RETURN TRUE;
 END;$$;
 
 
-SELECT add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0001KO');
-SELECT update_group('gr00010001', 'ar', null, null, 'olleg', 'lb0002KO', '2022-03-03');
+CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0001KO');
+CAll update_group('gr00010001', 'ar', null, null, 'olleg', 'lb0002KO', '2022-03-03');
 
 SELECT * FROM member_group;
 DELETE FROM member_group;
