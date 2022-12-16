@@ -45,6 +45,59 @@ BEGIN
     WHERE account_login = upd_account_login;
 END;$$;
 
+CREATE OR REPLACE FUNCTION add_profile()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+    DECLARE generate_digit_id TEXT;
+    digit_id VARCHAR(8);
+    unnec INTEGER;
+BEGIN
+    IF (SELECT COUNT(*) FROM profile) > 0 THEN
+        unnec := (SELECT setval('generate_8digit_id',
+            (SELECT MAX(substring(profile_id FROM 3 FOR 8)::INTEGER) FROM profile)));
+    ELSE
+        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
+    END IF;
+    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    digit_id := lpad(generate_digit_id, 8, '0');
+    INSERT INTO profile(profile_id, account_login)
+    VALUES (concat('id', digit_id), NEW.account_login);
+    RETURN NULL;
+END;$$;
+
+CREATE OR REPLACE TRIGGER add_profile_trigger
+AFTER INSERT ON account
+FOR EACH ROW
+EXECUTE FUNCTION add_profile();
+
+CREATE OR REPLACE FUNCTION add_shopping_cart()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+    DECLARE generate_digit_id TEXT;
+    digit_id VARCHAR(8);
+    unnec INTEGER;
+BEGIN
+    IF (SELECT COUNT(*) FROM shopping_cart) > 0 THEN
+        unnec := (SELECT setval('generate_8digit_id',
+            (SELECT MAX(substring(shopping_cart_id FROM 3 FOR 8)::INTEGER)
+             FROM shopping_cart)));
+    ELSE
+        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
+    END IF;
+    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    digit_id := lpad(generate_digit_id, 8, '0');
+    INSERT INTO shopping_cart(shopping_cart_id, confirm_payment, account_login)
+    VALUES (concat('sc', digit_id), FALSE, NEW.account_login);
+    RETURN NULL;
+END;$$;
+
+CREATE OR REPLACE TRIGGER add_shopping_cart_trigger
+AFTER INSERT ON account
+FOR EACH ROW
+EXECUTE FUNCTION add_shopping_cart();
+
 CALL update_profile('oleshandra', 'on', '2010-01-15');
 CALL delete_avatar('oleshandra');
 SELECT delete_date('');
