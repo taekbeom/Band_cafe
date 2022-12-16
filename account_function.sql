@@ -23,8 +23,8 @@ IF (SELECT COUNT(*) FROM profile) > 0 THEN
     END IF;
     generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 8, '0');
-    INSERT INTO profile(profile_id, profile_date_of_birth, account_login)
-    VALUES (concat('id', digit_id), CURRENT_DATE, user_login);
+    INSERT INTO profile(profile_id, account_login)
+    VALUES (concat('id', digit_id), user_login);
 
     IF (SELECT COUNT(*) FROM shopping_cart) > 0 THEN
         unnec := (SELECT setval('generate_8digit_id',
@@ -103,7 +103,7 @@ BEGIN
     RETURN FALSE;
 END;$$;
 
-SELECT * FROM add_user('oleshandra', 'popovich');
+SELECT * FROM add_user('oleshandr', 'popovich');
 SELECT * FROM account;
 DELETE FROM account;
 SELECT * FROM update_user('oleshandr', null, null, 1);

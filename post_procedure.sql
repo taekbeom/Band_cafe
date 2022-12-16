@@ -47,6 +47,32 @@ BEFORE DELETE ON account
 FOR EACH ROW
 EXECUTE FUNCTION delete_author();
 
+CREATE OR REPLACE PROCEDURE update_post(upd_post_id VARCHAR(32),
+new_post_text TEXT DEFAULT NULL,
+new_post_image TEXT DEFAULT NULL,
+new_category_id NUMERIC(2) DEFAULT NULL)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF (new_category_id IS NULL) THEN
+        new_category_id := (SELECT category_id FROM post
+        WHERE post_id = upd_post_id);
+    END IF;
+    IF (SELECT reply_post_id FROM post
+                             WHERE post_id = upd_post_id) IS NOT NULL THEN
+        new_category_id := NULL;
+    END IF;
+    IF (SELECT COUNT(*) FROM post_category
+                        WHERE category_id = new_category_id) = 1
+        OR new_category_id IS NULL THEN
+        UPDATE post
+        SET post_text = COALESCE(new_post_text, post_text),
+            post_image_source = COALESCE(new_post_image, post_image_source),
+            category_id = new_category_id
+        WHERE post_id = upd_post_id;
+    END IF;
+END;$$;
+
 
 
 CALL add_post('fr00010001', 'oleshandra',
@@ -56,6 +82,9 @@ CALL add_post('fr00010001', 'oleshandra',
 
 CALL add_post('fr00010001', 'oleshandra',
     'asfsa', null, '25dda4de42d141a0aae2e7a20c9177a1');
+
+CALL update_post('25dda4de42d141a0aae2e7a20c9177a1', null,
+    null, null);
 
 DROP TRIGGER delete_author_trigger ON account;
 DROP FUNCTION delete_author();
@@ -68,4 +97,9 @@ set_author_login VARCHAR(32),
 new_post_text TEXT,
 new_post_image TEXT,
 new_reply_post_id VARCHAR(32),
+new_category_id NUMERIC(2));
+
+DROP PROCEDURE update_post(upd_post_id VARCHAR(32),
+new_post_text TEXT,
+new_post_image TEXT,
 new_category_id NUMERIC(2))
