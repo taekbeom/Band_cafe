@@ -43,8 +43,20 @@ BEGIN
     RETURN TRUE;
 END;$$;
 
+CREATE OR REPLACE FUNCTION delete_date(upd_account_login VARCHAR(32))
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE profile SET profile_date_of_birth = NULL
+    WHERE account_login = upd_account_login;
+    RETURN TRUE;
+END;$$;
+
 SELECT update_profile('oleshandra', 'aa', '2021-12-15');
 SELECT delete_avatar('olleg');
+SELECT delete_date('oleshandra');
+
 
 (SELECT account.account_login FROM account
     LEFT JOIN profile ON profile.account_login = account.account_login

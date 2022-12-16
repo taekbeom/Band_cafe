@@ -73,6 +73,33 @@ BEGIN
     END IF;
 END;$$;
 
+CREATE OR REPLACE PROCEDURE delete_post(dlt_post_id VARCHAR(32))
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF (SELECT reply_post_id FROM post
+                             WHERE post_id = dlt_post_id) IS NULL THEN
+        DELETE FROM post WHERE reply_post_id = dlt_post_id;
+        DELETE FROM post WHERE post_id = dlt_post_id;
+    ELSIF (SELECT COUNT(*) FROM post
+    WHERE reply_post_id = dlt_post_id) = 0 THEN
+        DELETE FROM post WHERE post_id = dlt_post_id;
+    ELSE
+        UPDATE post
+        SET post_text = 'Cообщение удалено',
+        post_image_source = NULL,
+        author_login = NULL
+        WHERE post_id = dlt_post_id;
+    END IF;
+END;$$;
+
+CREATE OR REPLACE PROCEDURE delete_post_category(upd_post_id VARCHAR(32))
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE post
+    SET category_id = NULL WHERE post_id = upd_post_id;
+END;$$;
 
 
 CALL add_post('fr00010001', 'oleshandra',
@@ -83,8 +110,14 @@ CALL add_post('fr00010001', 'oleshandra',
 CALL add_post('fr00010001', 'oleshandra',
     'asfsa', null, '25dda4de42d141a0aae2e7a20c9177a1');
 
-CALL update_post('25dda4de42d141a0aae2e7a20c9177a1', null,
-    null, null);
+CALL add_post('fr00010001', 'oleshandra',
+    'asfsa', null, 'ca5d1878a02d4bee8b364de841fa47a1');
+
+
+CALL update_post('ca5d1878a02d4bee8b364de841fa47a1', null,
+    null, 1);
+
+CALL delete_post('25dda4de42d141a0aae2e7a20c9177a1');
 
 DROP TRIGGER delete_author_trigger ON account;
 DROP FUNCTION delete_author();

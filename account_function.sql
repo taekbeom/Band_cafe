@@ -40,6 +40,47 @@ IF (SELECT COUNT(*) FROM profile) > 0 THEN
 RETURN TRUE;
 END; $$;
 
+
+CREATE OR REPLACE PROCEDURE add_user_proc(user_login VARCHAR(32),
+						  user_password TEXT)
+LANGUAGE plpgsql
+AS $$
+    DECLARE generate_digit_id TEXT;
+    digit_id VARCHAR(8);
+    unnec INTEGER;
+BEGIN
+IF (SELECT COUNT(*) FROM account WHERE account_login = user_login) = 0 THEN
+    INSERT INTO account(account_login, account_password)
+    VALUES(user_login, crypt(user_password, gen_salt('bf', 8)));
+    EXECUTE FORMAT('CREATE USER %I WITH PASSWORD %L;', user_login, user_password);
+    EXECUTE FORMAT('GRANT user_role TO %I;', user_login);
+END IF;
+IF (SELECT COUNT(*) FROM profile) > 0 THEN
+        unnec := (SELECT setval('generate_8digit_id',
+            (SELECT MAX(substring(profile_id FROM 3 FOR 8)::INTEGER) FROM profile)));
+    ELSE
+        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
+    END IF;
+    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    digit_id := lpad(generate_digit_id, 8, '0');
+    INSERT INTO profile(profile_id, account_login)
+    VALUES (concat('id', digit_id), user_login);
+
+    IF (SELECT COUNT(*) FROM shopping_cart) > 0 THEN
+        unnec := (SELECT setval('generate_8digit_id',
+            (SELECT MAX(substring(shopping_cart_id FROM 3 FOR 8)::INTEGER)
+             FROM shopping_cart)));
+    ELSE
+        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
+    END IF;
+    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    digit_id := lpad(generate_digit_id, 8, '0');
+    INSERT INTO shopping_cart(shopping_cart_id, confirm_payment, account_login)
+    VALUES (concat('sc', digit_id), FALSE, user_login);
+END; $$;
+
+
+
 CREATE OR REPLACE FUNCTION update_user(old_login VARCHAR(32),
 new_login VARCHAR(32) DEFAULT NULL,
 new_password TEXT DEFAULT NULL,
@@ -103,6 +144,7 @@ BEGIN
     RETURN FALSE;
 END;$$;
 
+CALL add_user_proc('olga', 'olgovna');
 SELECT * FROM add_user('oleshandr', 'popovich');
 SELECT * FROM account;
 DELETE FROM account;
