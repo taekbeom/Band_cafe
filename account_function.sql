@@ -69,15 +69,13 @@ BEGIN
     END IF;
 END;$$;
 
-CALL add_user('oleshandr', 'popovich');
+CALL add_user('oleshandra', 'popovich');
+DROP ROLE oleshandra;
 SELECT * FROM account;
 DELETE FROM account;
 CALL update_user('oleshandr', null, null, 1);
 CALL delete_user('oleshandr');
 
-DELETE FROM account WHERE account_login = 'oleshandra';
-DROP TABLE account;
-DROP ROLE oleshandra;
 
 DROP FUNCTION update_user(old_login VARCHAR(32),
 new_login VARCHAR(32),

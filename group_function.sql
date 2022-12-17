@@ -16,9 +16,11 @@ DECLARE
     new_group_debut_date DATE;
     new_group_disband_date DATE;
 BEGIN
-    IF (SELECT COUNT(*) FROM member_group) > 0 THEN
+    IF (SELECT COUNT(*) FROM member_group
+        WHERE substring(group_id FROM 3 FOR 4) = substring(label_id FROM 3 FOR 4)) > 0 THEN
         unnec := (SELECT setval('generate_4digit_id',
-                                (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER) FROM member_group)));
+        (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER) FROM member_group
+        WHERE substring(group_id FROM 3 FOR 4) = substring(label_id FROM 3 FOR 4))));
     ELSE
         unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
     END IF;
@@ -57,6 +59,9 @@ new_group_disband TEXT DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
 DECLARE new_group_disband_date DATE;
+    digit_id             VARCHAR(4);
+    generate_digit_id    TEXT;
+    unnec                INTEGER;
 BEGIN
         IF (is_date(new_group_disband)) THEN
             new_group_disband_date := to_date(new_group_disband, 'yyyy-mm-dd');
@@ -78,23 +83,36 @@ BEGIN
     IF (new_label_id IS NOT NULL)
            AND (SELECT COUNT(*) FROM group_label
                                 WHERE label_id = new_label_id) = 1 THEN
+        IF (SELECT COUNT(*) FROM member_group
+        WHERE substring(group_id FROM 3 FOR 4) = substring(new_label_id FROM 3 FOR 4)) > 0 THEN
+        unnec := (SELECT setval('generate_4digit_id',
+        (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER) FROM member_group
+        WHERE substring(group_id FROM 3 FOR 4) = substring(new_label_id FROM 3 FOR 4))));
+    ELSE
+        unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
+    END IF;
+    generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
+    digit_id := lpad(generate_digit_id, 4, '0');
         UPDATE member_group
         SET group_id = concat('gr',
             substring(new_label_id FROM 3 FOR 4),
-            substring(upd_group_id FROM 7 FOR 4))
+            digit_id)
         WHERE group_id = upd_group_id;
     END IF;
 END;$$;
 
 
-CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0001KO');
-CAll update_group('gr00010001', 'ar', null, null, 'olleg', 'lb0002KO', '2022-03-03');
+CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0001JA');
+CAll update_group('gr00020001', 'ar', null, null, 'olleg', 'lb0001KO', '2022-03-03');
+
+CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0002KO');
+
 
 SELECT * FROM member_group;
 DELETE FROM member_group;
 
 
-DROP FUNCTION add_group(new_group_name VARCHAR(128),
+DROP PROCEDURE add_group(new_group_name VARCHAR(128),
                                      new_group_country VARCHAR(64),
                                      new_group_debut TEXT,
                                      new_group_fandom_name VARCHAR(128),
@@ -103,7 +121,7 @@ DROP FUNCTION add_group(new_group_name VARCHAR(128),
                                      label_id VARCHAR(8),
                                      new_group_disband TEXT);
 
-DROP FUNCTION update_group(upd_group_id VARCHAR(10),
+DROP PROCEDURE update_group(upd_group_id VARCHAR(10),
 new_group_name VARCHAR(128),
 new_group_fandom_name VARCHAR(128),
 new_group_description TEXT,

@@ -116,7 +116,7 @@ CREATE TABLE member_position(
 );
 
 CREATE TABLE album(
-    album_id VARCHAR(16) PRIMARY KEY,
+    album_id VARCHAR(12) PRIMARY KEY,
     album_name VARCHAR(128) NOT NULL,
     album_release_date DATE NOT NULL,
     album_cover TEXT DEFAULT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE album(
 );
 
 CREATE TABLE song(
-    song_id VARCHAR(24) PRIMARY KEY,
+    song_id VARCHAR(16) PRIMARY KEY,
     song_name VARCHAR(128) NOT NULL,
     song_duration NUMERIC(4) NOT NULL,
     song_mv TEXT DEFAULT NULL,
