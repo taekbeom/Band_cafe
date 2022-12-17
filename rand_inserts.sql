@@ -1,0 +1,116 @@
+CALL add_user('angela_soup', '6xt$K8swNHZr0jF48jIIYuJxCeVKjK*C');
+CALL add_user('kirill_why', 'HAlM7yUvj6wc#$HCubhfD&3B0e9449KR*C');
+CALL add_user('sanyacomeback', 'shIi6UiL7Sq%1TTeLIG7lgesd@9deDDz');
+
+CALL add_user('k_a_z_u_h_a__', 'j@Osv30WsQ^tSc7X3A9qh$I0bNdjLt#G');
+CALL add_user('_chaechae_1', 'YHw^7oh9^&878S9kVrEP^ZliXUzwmJWX');
+CALL add_user('choco_holic', '^57MBuZ&6$Q833aTSvsk6I4Jyxn4w0j4');
+CALL add_user('ShinRyuJin', 'bw1s^gu&TGJh7kx2cZAQW18eJODjOChP');
+CALL add_user('OhBaekwon', 'F3rM7KHUmLQ%r10L91yefK6nu40rhLIf');
+CALL add_user('Kyujin', 'LMoWIku@I*k31r#87efH$Q%Zna9oNG^3');
+CALL add_user('Winteo', 'YuCjhB#PZkXh4ZYlZ7N89Gl91BE3zxVQ');
+CALL add_user('riri', '%Dl^2gs28qKjdmp29zM0cX5!%7etcdai');
+
+CALL add_user('cool_oxi', 'zdRa7B4a&is6GIcWmU2&#zw23A$1QfEw');
+CALL add_user('oksusma', '^7X9m@qCDEx01h19rxPq6WGu%7@%2mZd');
+
+CALL update_user('angela_soup', new_role_id := 1);
+CALL update_user('kirill_why', new_role_id := 1);
+CALL update_user('sanyacomeback', new_role_id := 1);
+
+CALL add_label('SM Entertainment', 'И Суман',
+    'Korea', 'Seoul', 'sm_address',
+    '1995-02-14', 'description1');
+CALL add_label('JYP Entertainment', 'Пак Чинён',
+    'Korea', 'Seoul', 'Кандонгу',
+    '1997-04-25', 'description2');
+CALL add_label('Source Music', 'Со Сонджин',
+    'Korea', 'Seoul', 'source_address',
+    '2009-11-17', 'description3');
+
+CALL add_group('aespa', 'Korea',
+    '2020-11-17', 'MY',
+    'desc1', 'angela_soup',
+    'lb0001KO');
+
+CALL add_group('ITZY', 'Korea',
+    '2019-02-12', 'MIDZY',
+    'desc2', 'angela_soup',
+    'lb0002KO');
+
+CALL add_group('NMIXX', 'Korea',
+    '2020-11-17', 'NSWER',
+    'desc3', 'kirill_why',
+    'lb0002KO');
+
+CALL add_group('LE SSERAFIM', 'Korea',
+    '2022-05-02', 'FEARNOT',
+    'desc4', 'sanyacomeback',
+    'lb0003KO');
+
+CALL add_album('gr00020001', 'IT''Z ME',
+    '2020-03-09');
+
+CALL add_album('gr00020001', 'CHESHIRE',
+    '2022-11-30','album_cover_path');
+
+CALL add_album('gr00010001', 'Black Mamba/Single',
+    '2020-11-17', 'album_cover_path2');
+
+CALL add_song('albm00000001', 'WANNABE',
+    191, 'song_mv1');
+
+CALL add_song('albm00000001', '24HRS',
+    128);
+
+CALL add_song('albm00000002', 'Cheshire',
+    183, 'song_mv2');
+
+CALL add_song('albm00000002', 'Snowy',
+    174);
+
+CALL add_song('albm00000002', 'Freaky',
+    176);
+
+CALL add_song('albm00000003', 'Black Mamba',
+    174, 'song_mv3');
+
+CALl add_member('k_a_z_u_h_a__', 'gr00030001',
+    'Накамура Кадзуха', 'Кадзуха',
+    '2003-08-09', 'Japan',
+    'Kochi', 'descr1', 170);
+
+CALl add_member('_chaechae_1', 'gr00030001',
+    'Ким Чэвон', 'Ким Чэвон',
+    '2000-08-01', 'Korea',
+    'Seoul', 'descr2', 163);
+
+CALl add_member('choco_holic', 'gr00020001',
+    'И Чэрён', 'Чэрён',
+    '2001-06-05', 'Korea',
+    'Yongin', 'descr3', 166);
+
+CALl add_member('ShinRyuJin', 'gr00020001',
+    'Шин Рюджин', 'Рюджин',
+    '2001-04-17', 'Korea',
+    'Seoul', 'descr4', 164);
+
+CALl add_member('OhBaekwon', 'gr00020002',
+    'О Хэвон', 'Хэвон',
+    '2003-02-25', 'Korean',
+    'Incheon', 'descr5', 163);
+
+CALl add_member('Kyujin', 'gr00020002',
+    'Чжан Кюджин', 'Кюджин',
+    '2006-05-26', 'Korean',
+    'Gyeonggi-do', 'descr6', 166);
+
+CALl add_member('Winteo', 'gr00010001',
+    'Ким Минджон', 'Винтер',
+    '2001-01-01', 'Korea',
+    'Busan', 'descr7');
+
+CALl add_member('riri', 'gr00010001',
+    'Учинага Эри', 'Жизель',
+    '2000-10-30', 'Korea',
+    'Garosu-gil', 'descr8', 163);
