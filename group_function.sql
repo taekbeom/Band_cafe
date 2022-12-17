@@ -102,31 +102,3 @@ BEGIN
         WHERE group_id = upd_group_id;
     END IF;
 END;$$;
-
-
-CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0001KO');
-CAll update_group('gr00020001', 'ar', null, null, 'olleg', 'lb0001KO', '2022-03-03');
-
-CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0002KO');
-
-
-SELECT * FROM member_group;
-DELETE FROM member_group;
-
-
-DROP PROCEDURE add_group(new_group_name VARCHAR(128),
-                                     new_group_country VARCHAR(64),
-                                     new_group_debut TEXT,
-                                     new_group_fandom_name VARCHAR(128),
-                                     new_group_description TEXT,
-                                     manager_login VARCHAR(32),
-                                     label_id VARCHAR(8),
-                                     new_group_disband TEXT);
-
-DROP PROCEDURE update_group(upd_group_id VARCHAR(10),
-new_group_name VARCHAR(128),
-new_group_fandom_name VARCHAR(128),
-new_group_description TEXT,
-manager_login VARCHAR(32),
-new_label_id VARCHAR(8),
-new_group_disband TEXT);

@@ -60,22 +60,3 @@ AS $$
 BEGIN
     DELETE FROM album WHERE album_id = dlt_album_id;
 END;$$;
-
-CALl add_album('gr00010002', 'aaa', '2022-12-15');
-CALl add_album('gr00020001', 'aaa', '2022-12-15');
-CALl add_album('gr00010002', 'aaa', '2022-12-15');
-
-CALL update_album('albm00000005', null, '2', 'loh');
-
-SELECT * FROM album;
-DELETE FROM album;
-
-DROP PROCEDURE add_album(set_group_id VARCHAR(10),
-new_album_name VARCHAR(128),
-new_album_release TEXT,
-new_album_cover TEXT);
-
-DROP PROCEDURE update_album(upd_album_id VARCHAR(12),
-new_album_name VARCHAR(128),
-new_album_release TEXT,
-new_album_cover TEXT);

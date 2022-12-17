@@ -32,21 +32,6 @@ BEGIN
     END IF;
 END;$$;
 
-CREATE OR REPLACE FUNCTION delete_author()
-RETURNS TRIGGER
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE post
-    SET author_login = NULL WHERE author_login = OLD.account_login;
-    RETURN OLD;
-END;$$;
-
-CREATE OR REPLACE TRIGGER delete_author_trigger
-BEFORE DELETE ON account
-FOR EACH ROW
-EXECUTE FUNCTION delete_author();
-
 CREATE OR REPLACE PROCEDURE update_post(upd_post_id VARCHAR(32),
 new_post_text TEXT DEFAULT NULL,
 new_post_image TEXT DEFAULT NULL,
@@ -100,41 +85,3 @@ BEGIN
     UPDATE post
     SET category_id = NULL WHERE post_id = upd_post_id;
 END;$$;
-
-
-CALL add_post('fr00010001', 'olesh',
-    'asfsa');
-CALL add_post('fr00010001', 'olesh',
-    'asfsa', null, 'f045410457e14082b48d90368f599d97');
-CALL add_post('fr00010001', 'oleshandra',
-    'asfsa', null, null, 1);
-
-CALL add_post('fr00010001', 'oleshandra',
-    'asfsa', null, '25dda4de42d141a0aae2e7a20c9177a1');
-
-CALL add_post('fr00010001', 'oleshandra',
-    'asfsa', null, 'ca5d1878a02d4bee8b364de841fa47a1');
-
-
-CALL update_post('ca5d1878a02d4bee8b364de841fa47a1', null,
-    null, 1);
-
-CALL delete_post('25dda4de42d141a0aae2e7a20c9177a1');
-
-DROP TRIGGER delete_author_trigger ON account;
-DROP FUNCTION delete_author();
-
-SELECT * FROM post;
-DELETE FROM post;
-
-DROP PROCEDURE add_post(set_forum_id VARCHAR(10),
-set_author_login VARCHAR(32),
-new_post_text TEXT,
-new_post_image TEXT,
-new_reply_post_id VARCHAR(32),
-new_category_id NUMERIC(2));
-
-DROP PROCEDURE update_post(upd_post_id VARCHAR(32),
-new_post_text TEXT,
-new_post_image TEXT,
-new_category_id NUMERIC(2))

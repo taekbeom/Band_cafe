@@ -52,17 +52,3 @@ BEGIN
     UPDATE song
     SET song_mv = NULL WHERE song_id = upd_song_id;
 END;$$;
-
-CALL add_song('albm00000001', 'dream', 233);
-CALL add_song('albm00000003', 'dream', 233, 'dsa');
-
-SELECT * FROM song;
-
-CALL update_song('alsg000000000001', 'funny', 3444, 'hehe');
-CALL delete_song('alsg000000001004');
-CALL delete_song_mv('alsg000000000001');
-
-DROP PROCEDURE add_song(set_album_id VARCHAR(12),
-new_song_name VARCHAR(128),
-new_song_duration NUMERIC(4),
-new_song_mv TEXT )

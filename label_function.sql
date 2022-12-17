@@ -65,28 +65,3 @@ BEGIN
     WHERE label_id = upd_label_id;
     END IF;
 END;$$;
-
-CALL add_label('JYP', 'J Y Park', 'South Korea', 'Seoul', 'asfsa', '2010-04-03', 'sada');
-SELECT * FROM group_label
-DELETE FROM group_label;
-
-CALL update_label('lb0001KO', 'SM', 'bp', 'JAPAN');
-
-DROP FUNCTION add_label(new_label_name VARCHAR(128),
-new_label_director VARCHAR(128),
-new_label_country VARCHAR(64),
-new_label_city VARCHAR(64),
-new_label_main_address TEXT,
-new_label_string_date TEXT,
-new_label_description TEXT);
-
-DROP FUNCTION update_label(upd_label_id VARCHAR(8),
-new_label_name VARCHAR(128),
-new_label_director VARCHAR(128),
-new_label_country VARCHAR(64),
-new_label_city VARCHAR(64),
-new_label_address TEXT,
-new_label_description TEXT);
-
-SELECT ((SELECT substring(label_id FROM 3 FOR 4) FROM group_label)::INTEGER)
-

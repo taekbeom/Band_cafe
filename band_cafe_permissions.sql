@@ -1,3 +1,8 @@
+DROP ROLE user_role;
+DROP ROLE member_role;
+DROP ROLE manager_role;
+DROP ROLE admin_role;
+
 CREATE ROLE user_role;
 CREATE ROLE member_role;
 CREATE ROLE manager_role;

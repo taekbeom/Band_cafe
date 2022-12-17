@@ -127,7 +127,7 @@ CREATE TABLE song(
     song_name VARCHAR(128) NOT NULL,
     song_duration NUMERIC(4) NOT NULL,
     song_mv TEXT DEFAULT NULL,
-    album_id VARCHAR(16) NOT NULL REFERENCES album(album_id) ON UPDATE CASCADE
+    album_id VARCHAR(12) NOT NULL REFERENCES album(album_id) ON UPDATE CASCADE
 );
 
 CREATE TABLE forum(
