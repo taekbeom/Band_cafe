@@ -161,10 +161,18 @@ USING (
     JOIN song ON album.album_id = song.album_id) = CURRENT_USER
     );
 
-CREATE POLICY merch_policy ON merch
-    FOR ALL
+CREATE POLICY upd_merch_policy ON merch
+    FOR UPDATE
 TO manager_role
 USING (
+    (SELECT group_manager FROM member_group
+    JOIN merch ON member_group.group_id = merch.group_id) = CURRENT_USER
+    );
+
+CREATE POLICY ins_merch_policy ON merch
+    FOR INSERT
+TO manager_role
+WITH CHECK (
     (SELECT group_manager FROM member_group
     JOIN merch ON member_group.group_id = merch.group_id) = CURRENT_USER
     );
