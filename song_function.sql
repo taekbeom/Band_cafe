@@ -34,7 +34,7 @@ BEGIN
     UPDATE song
     SET song_name = COALESCE(new_song_name, song_name),
     song_duration = COALESCE(new_song_duration, song_duration),
-    song_mv = COALESCE(new_song_mv, song_mv)
+    song_mv = new_song_mv
     WHERE song_id = upd_song_id;
 END;$$;
 
@@ -43,12 +43,4 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     DELETE FROM song WHERE song_id = dlt_song_id;
-END;$$;
-
-CREATE OR REPLACE PROCEDURE delete_song_mv(upd_song_id VARCHAR(16))
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE song
-    SET song_mv = NULL WHERE song_id = upd_song_id;
 END;$$;

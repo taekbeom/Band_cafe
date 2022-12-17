@@ -87,11 +87,3 @@ BEGIN
         WHERE post_id = dlt_post_id;
     END IF;
 END;$$;
-
-CREATE OR REPLACE PROCEDURE delete_post_category(upd_post_id VARCHAR(32))
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE post
-    SET category_id = NULL WHERE post_id = upd_post_id;
-END;$$;

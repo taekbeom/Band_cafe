@@ -77,10 +77,10 @@ BEGIN
         END IF;
     UPDATE member_group SET
     group_name = COALESCE(new_group_name, group_name),
-    group_fandom_name = COALESCE(new_group_fandom_name, group_fandom_name),
+    group_fandom_name = new_group_fandom_name,
     group_description_source = COALESCE(new_group_description, group_description_source),
     group_manager = COALESCE(manager_login, group_manager),
-    group_disband_date = COALESCE(new_group_disband_date, group_disband_date)
+    group_disband_date = new_group_disband_date
     WHERE group_id = upd_group_id;
     IF (new_label_id IS NOT NULL)
            AND (SELECT COUNT(*) FROM group_label

@@ -88,7 +88,7 @@ BEGIN
         member_date_of_birth = COALESCE(new_member_date, member_date_of_birth),
         member_country = COALESCE(new_member_country, member_country),
         member_city = COALESCE(new_member_city, member_city),
-        member_height = COALESCE(new_member_height, member_height),
+        member_height = new_member_height,
         member_description_source = COALESCE(new_member_description,
             member_description_source),
         label_id = COALESCE(ref_label_id, label_id),
@@ -106,15 +106,6 @@ BEGIN
     WHERE member_id = dlt_member_id;
     DELETE FROM member
     WHERE member_id = dlt_member_id;
-END;$$;
-
-CREATE OR REPLACE PROCEDURE delete_member_height(upd_member_id VARCHAR(12))
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE member
-    SET member_height = NULL
-    WHERE member_id = upd_member_id;
 END;$$;
 
 CREATE OR REPLACE PROCEDURE delete_member_position(set_member_id VARCHAR(12),

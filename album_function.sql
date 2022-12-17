@@ -50,7 +50,7 @@ BEGIN
     UPDATE album
     SET album_name = COALESCE(new_album_name, album_name),
     album_release_date = COALESCE(new_album_release_date, album_release_date),
-    album_cover = COALESCE(new_album_cover, album_cover)
+    album_cover = new_album_cover
     WHERE album_id = upd_album_id;
 END;$$;
 

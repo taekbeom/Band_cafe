@@ -13,34 +13,8 @@ BEGIN
         new_profile_date := to_date(new_profile_string_date, 'yyyy-mm-dd');
     END IF;
     UPDATE profile
-    SET profile_avatar_source = COALESCE(new_profile_avatar,
-        profile_avatar_source),
+    SET profile_avatar_source = new_profile_avatar,
         profile_date_of_birth = new_profile_date,
-    profile_description = COALESCE(new_profile_description,
-        profile_description)
-    WHERE account_login = upd_account_login;
-END;$$;
-
-CREATE OR REPLACE PROCEDURE delete_avatar(upd_account_login VARCHAR(32))
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE profile SET profile_avatar_source = NULL
-    WHERE account_login = upd_account_login;
-END;$$;
-
-CREATE OR REPLACE PROCEDURE delete_description(upd_account_login VARCHAR(32))
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE profile SET profile_description = NULL
-    WHERE account_login = upd_account_login;
-END;$$;
-
-CREATE OR REPLACE PROCEDURE delete_date(upd_account_login VARCHAR(32))
-LANGUAGE plpgsql
-AS $$
-BEGIN
-    UPDATE profile SET profile_date_of_birth = NULL
+    profile_description = new_profile_description
     WHERE account_login = upd_account_login;
 END;$$;
