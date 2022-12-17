@@ -102,8 +102,10 @@ BEGIN
 END;$$;
 
 
-CALL add_post('fr00010001', 'oleshandra',
+CALL add_post('fr00010001', 'olesh',
     'asfsa');
+CALL add_post('fr00010001', 'olesh',
+    'asfsa', null, 'f045410457e14082b48d90368f599d97');
 CALL add_post('fr00010001', 'oleshandra',
     'asfsa', null, null, 1);
 

@@ -148,7 +148,7 @@ CREATE TABLE post(
     post_date DATE NOT NULL,
     post_image_source TEXT,
     forum_id VARCHAR(10) NOT NULL REFERENCES forum(forum_id) ON UPDATE CASCADE,
-    author_login VARCHAR(32) REFERENCES account(account_login),
+    author_login VARCHAR(32) REFERENCES account(account_login) ON UPDATE CASCADE,
     reply_post_id VARCHAR(32) REFERENCES post(post_id) ON UPDATE CASCADE,
     category_id NUMERIC(2) REFERENCES post_category(category_id) ON UPDATE CASCADE
 );

@@ -70,12 +70,15 @@ BEGIN
 END;$$;
 
 CALL add_user('oleshandra', 'popovich');
+CALL add_user('olesh', 'popovich');
+CALL add_user('olga', 'popovich');
+
 DROP ROLE oleshandra;
 SELECT * FROM account;
 DELETE FROM account;
 CALL update_user('oleshandr', null, null, 1);
 CALL delete_user('oleshandra');
-
+CALL delete_user('olga');
 
 DROP FUNCTION update_user(old_login VARCHAR(32),
 new_login VARCHAR(32),
