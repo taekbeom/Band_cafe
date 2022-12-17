@@ -42,6 +42,8 @@ BEGIN
             VALUES (concat('mmbr', digit_id),
                     (SELECT profile_id FROM profile
                                        WHERE account_login = member_account_login));
+            CALL update_user(member_account_login,
+                NULL, NULL, 2);
         END IF;
     END IF;
 END;$$;
@@ -125,7 +127,7 @@ BEGIN
           position_code = set_member_position_code;
 END;$$;
 
-CALL add_member('oleshandra', 'gr00010001', 'oleg', 'oleg',
+CALL add_member('olesh', 'gr00010001', 'oleg', 'oleg',
     '2006-07-03','ko', 'seoul', 'aaa', null);
 INSERT INTO member
 VALUES ('11', 'oleg',
