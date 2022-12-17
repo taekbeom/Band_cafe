@@ -126,35 +126,3 @@ BEGIN
     WHERE member_id = set_member_id AND
           position_code = set_member_position_code;
 END;$$;
-
-CALL add_member('olesh', 'gr00010001', 'oleg', 'oleg',
-    '2006-07-03','ko', 'seoul', 'aaa', null);
-INSERT INTO member
-VALUES ('11', 'oleg',
-        'oleg', '2006-07-03','ko', 'seoul',
-        2, 'aaa', 'lb', 'gr0001');
-CALl delete_member('mmbr00000002');
-CALL update_member('mmbr00000003', new_member_height := 160);
-CALL add_member_position('mmbr00000003', 1);
-
-CALL add_member_position('mmbr00000003', 5);
-
-CALL delete_member_position('mmbr00000003', 1);
-CALL delete_member_height('mmbr00000003');
-
-SELECT * FROM member;
-SELECT * FROM member_position;
-SELECT * FROM member_profile;
-DELETE FROM member_profile;
-DELETE FROM member_position;
-DELETE FROM member;
-
-DROP PROCEDURE add_member(member_account_login VARCHAR(32),
-ref_group_id VARCHAR(10),
-new_member_name VARCHAR(128),
-new_member_stage_name VARCHAR(128),
-new_member_string_date TEXT,
-new_member_country VARCHAR(64),
-new_member_city VARCHAR(64),
-new_member_description TEXT,
-new_member_height NUMERIC(3));

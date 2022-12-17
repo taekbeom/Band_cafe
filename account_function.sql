@@ -43,7 +43,7 @@ BEGIN
 
         UPDATE account SET
     account_login = login_change,
-    account_password = COALESCE(crypt(new_password, gen_salt('bf')),
+    account_password = COALESCE(crypt(new_password, gen_salt('bf'), 8),
         account_password),
     role_id = role_id_change
     WHERE account_login = old_login;

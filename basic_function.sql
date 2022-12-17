@@ -1,3 +1,7 @@
+DROP SEQUENCE generate_4digit_id;
+DROP SEQUENCE generate_8digit_id;
+DROP SEQUENCE generate_12digit_id;
+
 CREATE SEQUENCE IF NOT EXISTS generate_4digit_id
 MINVALUE 1
 MAXVALUE 9999;

@@ -1,3 +1,8 @@
+REVOKE ALL PRIVILEGES ON SCHEMA public FROM user_role;
+REVOKE ALL PRIVILEGES ON SCHEMA public FROM member_role;
+REVOKE ALL PRIVILEGES ON SCHEMA public FROM manager_role;
+REVOKE ALL PRIVILEGES ON SCHEMA public FROM admin_role;
+
 DROP ROLE user_role;
 DROP ROLE member_role;
 DROP ROLE manager_role;
@@ -7,14 +12,6 @@ CREATE ROLE user_role;
 CREATE ROLE member_role;
 CREATE ROLE manager_role;
 CREATE ROLE admin_role;
-
-INSERT INTO account
-VALUES ('olleg', crypt('HF*w3hI9ZWL7JBoRy243&#ohV5YI9Zp', gen_salt('bf', 8)), 0);
-CREATE USER olleg WITH PASSWORD 'HF*w3hI9ZWL7JBoRy243&#ohV5YI9Zp';
-GRANT admin_role TO olleg;
-ALTER ROLE admin_role CREATEROLE;
-ALTER USER olleg CREATEROLE;
-GRANT pg_write_server_files TO olleg;
 
 GRANT USAGE, SELECT, UPDATE ON SEQUENCE generate_4digit_id
     TO admin_role, manager_role, member_role, user_role;
