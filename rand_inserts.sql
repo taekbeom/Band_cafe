@@ -114,3 +114,40 @@ CALl add_member('riri', 'gr00010001',
     'Учинага Эри', 'Жизель',
     '2000-10-30', 'Korea',
     'Garosu-gil', 'descr8', 163);
+
+CALL add_post('fr00010001', 'Winteo',
+    'I''m sick of AI', null, null,
+    7);
+CALL add_post('fr00010001', 'oksusma',
+    ':peeposad:', '/pepega.png',
+    'f6a0843ed85441f8bb02ce251d4ca150');
+CALL add_post('fr00010001', 'choco_holic',
+    '>:(', null,
+    'f6a0843ed85441f8bb02ce251d4ca150');
+CALL add_post('fr00010001', 'cool_oxi',
+    '21st soon', null,
+    '97d6e8e531f044158de4f7c90c12bcbe');
+
+CALL add_post('fr00020001', 'Kyujin',
+    'why networks on test why', null);
+CALL add_post('fr00020001', 'OhBaekwon',
+    'nice day skip school');
+
+CALL add_post('fr00010002', 'choco_holic',
+    'walked with my dog^^', null,
+    null,  0);
+CALL add_post('fr00010002', 'kirill_why',
+    ':shcok2000: u hav dog?', '/guoba.png',
+    '04272a2a41e8446abfb35a34a9382522');
+CALL add_post('fr00010002', 'ShinRyuJin',
+    'wdym:0', null,
+    'af6305c1afec4d19b940662325ee2a2e');
+CALL add_post('fr00010002', 'oksusma',
+    'i''m buying cat', '/dpgge.jpg',
+    '04272a2a41e8446abfb35a34a9382522');
+CALL add_post('fr00010002', 'oksusma',
+    'actually now i have work:(', null,
+    '04272a2a41e8446abfb35a34a9382522');
+CALL add_post('fr00010002', 'cool_oxi',
+    'aaaaaaaa', null,
+    'af6305c1afec4d19b940662325ee2a2e');
