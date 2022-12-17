@@ -93,7 +93,6 @@ CREATE TABLE member(
     member_city VARCHAR(64) NOT NULL,
     member_height NUMERIC(3) DEFAULT NULL,
     member_description_source TEXT NOT NULL,
-    account_login VARCHAR(32) NOT NULL UNIQUE REFERENCES account(account_login) ON UPDATE CASCADE,
     label_id VARCHAR(8) NOT NULL REFERENCES group_label(label_id) ON UPDATE CASCADE,
     group_id VARCHAR(10) NOT NULL REFERENCES member_group(group_id) ON UPDATE CASCADE
 );

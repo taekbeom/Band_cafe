@@ -4,7 +4,7 @@ CREATE OR REPLACE PROCEDURE add_group(new_group_name VARCHAR(128),
                                      new_group_fandom_name VARCHAR(128),
                                      new_group_description TEXT,
                                      manager_login VARCHAR(32),
-                                     label_id VARCHAR(8),
+                                     set_label_id VARCHAR(8),
                                      new_group_disband TEXT DEFAULT NULL)
     LANGUAGE plpgsql
 AS
@@ -16,38 +16,40 @@ DECLARE
     new_group_debut_date DATE;
     new_group_disband_date DATE;
 BEGIN
-    IF (SELECT COUNT(*) FROM member_group
-        WHERE substring(group_id FROM 3 FOR 4) = substring(label_id FROM 3 FOR 4)) > 0 THEN
-        unnec := (SELECT setval('generate_4digit_id',
-        (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER) FROM member_group
-        WHERE substring(group_id FROM 3 FOR 4) = substring(label_id FROM 3 FOR 4))));
-    ELSE
-        unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 4, '0');
-    IF (is_date(new_group_debut) AND
-        to_date(new_group_debut, 'yyyy-mm-dd') IS NOT NULL) THEN
-        new_group_debut_date := to_date(new_group_debut, 'yyyy-mm-dd');
+    IF (SELECT COUNT(*) FROM group_label
+                        WHERE group_label.label_id = set_label_id) THEN
+        IF (SELECT COUNT(*) FROM member_group
+            WHERE substring(group_id FROM 3 FOR 4) = substring(set_label_id FROM 3 FOR 4)) > 0 THEN
+            unnec := (SELECT setval('generate_4digit_id',
+            (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER) FROM member_group
+            WHERE substring(group_id FROM 3 FOR 4) = substring(set_label_id FROM 3 FOR 4))));
         ELSE
-        new_group_debut_date := NULL;
+            unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
+        END IF;
+        generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
+        digit_id := lpad(generate_digit_id, 4, '0');
+        IF (is_date(new_group_debut) AND
+            to_date(new_group_debut, 'yyyy-mm-dd') IS NOT NULL) THEN
+            new_group_debut_date := to_date(new_group_debut, 'yyyy-mm-dd');
+            ELSE
+            new_group_debut_date := NULL;
+        END IF;
+        IF (is_date(new_group_disband)) THEN
+            new_group_disband_date := to_date(new_group_disband, 'yyyy-mm-dd');
+        ELSE
+            new_group_disband_date := NULL;
+        END IF;
+        IF (SELECT COUNT(*) FROM account
+                            WHERE account_login = manager_login) = 1
+            AND new_group_debut_date IS NOT NULL THEN
+            INSERT INTO member_group
+        VALUES (concat('gr', substring(set_label_id FROM 3 FOR 4), digit_id),
+                new_group_name, new_group_country, new_group_debut_date,
+                new_group_disband_date, new_group_fandom_name,
+                new_group_description, manager_login);
+        END IF;
     END IF;
-    IF (is_date(new_group_disband)) THEN
-        new_group_disband_date := to_date(new_group_disband, 'yyyy-mm-dd');
-    ELSE
-        new_group_disband_date := NULL;
-    END IF;
-    IF (SELECT COUNT(*) FROM account
-                        WHERE account_login = manager_login) = 1
-        AND new_group_debut_date IS NOT NULL THEN
-        INSERT INTO member_group
-    VALUES (concat('gr', substring(label_id FROM 3 FOR 4), digit_id),
-            new_group_name, new_group_country, new_group_debut_date,
-            new_group_disband_date, new_group_fandom_name,
-            new_group_description, manager_login);
-    END IF;
-END;
-$$;
+END;$$;
 
 CREATE OR REPLACE PROCEDURE update_group(upd_group_id VARCHAR(10),
 new_group_name VARCHAR(128) DEFAULT NULL,
@@ -102,7 +104,7 @@ BEGIN
 END;$$;
 
 
-CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0001JA');
+CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0001KO');
 CAll update_group('gr00020001', 'ar', null, null, 'olleg', 'lb0001KO', '2022-03-03');
 
 CAll add_group('fafa', 'dassda', '2020-01-01', 'adsa', 'das', 'oleshandra', 'lb0002KO');

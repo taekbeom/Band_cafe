@@ -74,7 +74,7 @@ DROP ROLE oleshandra;
 SELECT * FROM account;
 DELETE FROM account;
 CALL update_user('oleshandr', null, null, 1);
-CALL delete_user('oleshandr');
+CALL delete_user('oleshandra');
 
 
 DROP FUNCTION update_user(old_login VARCHAR(32),
