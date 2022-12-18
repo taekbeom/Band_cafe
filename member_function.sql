@@ -44,6 +44,7 @@ BEGIN
                                        WHERE account_login = member_account_login));
             CALL update_user(member_account_login,
                 NULL, NULL, 2);
+            COMMIT ;
         END IF;
     END IF;
 END;$$;
@@ -106,6 +107,7 @@ BEGIN
     WHERE member_id = dlt_member_id;
     DELETE FROM member
     WHERE member_id = dlt_member_id;
+    COMMIT;
 END;$$;
 
 CREATE OR REPLACE PROCEDURE delete_member_position(set_member_id VARCHAR(12),

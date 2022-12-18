@@ -64,4 +64,5 @@ BEGIN
         upper(substring(new_label_id_country FROM 1 FOR 2)))
     WHERE label_id = upd_label_id;
     END IF;
+    COMMIT;
 END;$$;

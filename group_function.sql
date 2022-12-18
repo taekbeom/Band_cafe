@@ -101,4 +101,5 @@ BEGIN
             digit_id)
         WHERE group_id = upd_group_id;
     END IF;
+    COMMIT;
 END;$$;

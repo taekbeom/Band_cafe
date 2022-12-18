@@ -8,6 +8,7 @@ IF (SELECT COUNT(*) FROM account WHERE account_login = user_login) = 0 THEN
     VALUES(user_login, crypt(user_password, gen_salt('bf', 8)));
     EXECUTE FORMAT('CREATE USER %I WITH PASSWORD %L;', user_login, user_password);
     EXECUTE FORMAT('GRANT user_role TO %I;', user_login);
+    COMMIT;
 END IF;
 END; $$;
 
@@ -66,5 +67,11 @@ BEGIN
     DELETE FROM profile WHERE account_login = delete_login;
     DELETE FROM shopping_cart WHERE account_login = delete_login;
     DELETE FROM account WHERE account_login = delete_login;
+    COMMIT;
     END IF;
 END;$$;
+
+SELECT * FROM account;
+SELECT * FROM member_group;
+CALL update_group('gr00030001', manager_login := 'kirill_why')
+CALL delete_user('sanyacomeback');

@@ -38,7 +38,7 @@ CREATE TABLE profile(
 CREATE TABLE shopping_cart(
     shopping_cart_id VARCHAR(10) PRIMARY KEY,
     confirm_payment BOOLEAN NOT NULL,
-    user_money NUMERIC(12, 2) DEFAULT 0,
+    user_money NUMERIC(12, 2) NOT NULL DEFAULT 0,
     account_login VARCHAR(32) NOT NULL UNIQUE REFERENCES account(account_login) ON UPDATE CASCADE
 );
 
@@ -57,7 +57,7 @@ CREATE TABLE merch(
     merch_id VARCHAR(12) PRIMARY KEY,
     merch_name TEXT NOT NULL,
     merch_price NUMERIC(12, 2) NOT NULL,
-    merch_status BOOLEAN NOT NULL,
+    merch_status BOOLEAN NOT NULL DEFAULT FALSE,
     merch_amount INTEGER NOT NULL,
     merch_description_source TEXT NOT NULL,
     group_id VARCHAR(10) NOT NULL REFERENCES member_group(group_id) ON UPDATE CASCADE
