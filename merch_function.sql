@@ -50,16 +50,9 @@ BEGIN
     END IF;
 END;$$;
 
-CREATE OR REPLACE FUNCTION unavailable_merch(dlt_merch_id VARCHAR(12))
-RETURNS TRIGGER
-LANGUAGE plpgsql
-AS $$
-BEGIN
-END;$$;
-
 CALL add_merch('angela_soup', 'aaa', 122, 10, 'bb',
     'gr00020001');
-CALL update_merch('mrch00000001' , new_merch_group_id := 'gr00010001');
+CALL update_merch('mrch00000001' , new_merch_group_id := 'gr00010001', new_merch_amount := 50);
 
 SELECT * FROM merch;
 SELECT * FROM member_group;

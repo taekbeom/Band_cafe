@@ -12,8 +12,6 @@ AS $$
         generate_digit_id TEXT;
         new_label_date DATE;
 BEGIN
-    generate_digit_id := (SELECT nextval('generate_label_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 4, '0');
     new_label_id_country := new_label_country;
     IF split_part(new_label_country, ' ', 2) != '' THEN
         new_label_id_country := split_part(new_label_country, ' ', 2);
@@ -21,6 +19,8 @@ BEGIN
     IF (is_date(new_label_string_date) AND
         to_date(new_label_string_date, 'yyyy-mm-dd') IS NOT NULL) THEN
         new_label_date := to_date(new_label_string_date, 'yyyy-mm-dd');
+        generate_digit_id := (SELECT nextval('generate_label_id'))::TEXT;
+        digit_id := lpad(generate_digit_id, 4, '0');
         INSERT INTO group_label
     VALUES (concat('lb', digit_id, substring(upper(new_label_id_country) FROM 1 FOR 2)),
             new_label_name, new_label_director, new_label_country,

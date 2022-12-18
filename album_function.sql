@@ -8,9 +8,6 @@ AS $$
         generate_digit_id TEXT;
         new_album_release_date DATE;
 BEGIN
-    generate_digit_id := (SELECT nextval('generate_album_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 8, '0');
-
     IF (is_date(new_album_release) AND
         to_date(new_album_release, 'yyyy-mm-dd') IS NOT NULL) THEN
         new_album_release_date := to_date(new_album_release, 'yyyy-mm-dd');
@@ -20,6 +17,8 @@ BEGIN
 
     IF (new_album_release_date IS NOT NULL) AND
        (SELECT COUNT(*) FROM member_group WHERE group_id = set_group_id) > 0 THEN
+        generate_digit_id := (SELECT nextval('generate_album_id'))::TEXT;
+        digit_id := lpad(generate_digit_id, 8, '0');
         INSERT INTO album
         VALUES (concat('albm', digit_id),
                 new_album_name, new_album_release_date,

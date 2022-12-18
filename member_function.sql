@@ -15,8 +15,6 @@ AS $$
         set_label_id VARCHAR(8);
 BEGIN
     IF (SELECT COUNT(*) FROM account WHERE account_login = member_account_login) THEN
-    generate_digit_id := (SELECT nextval('generate_member_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 8, '0');
         IF (is_date(new_member_string_date)) THEN
             new_member_date := to_date(new_member_string_date, 'yyyy-mm-dd');
         ELSE
@@ -26,6 +24,8 @@ BEGIN
             set_label_id := (SELECT label_id FROM group_label
                     WHERE substring(group_label.label_id FROM 3 FOR 4)
                     = substring(ref_group_id FROM 3 FOR 4));
+            generate_digit_id := (SELECT nextval('generate_member_id'))::TEXT;
+            digit_id := lpad(generate_digit_id, 8, '0');
             INSERT INTO member
             VALUES (concat('mmbr', digit_id), new_member_name,
                     new_member_stage_name, new_member_date, new_member_country,

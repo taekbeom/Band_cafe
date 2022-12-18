@@ -7,10 +7,9 @@ AS $$
     DECLARE digit_id VARCHAR(12);
         generate_digit_id TEXT;
 BEGIN
+    IF (SELECT COUNT(*) FROM album WHERE album_id = set_album_id) > 0 THEN
     generate_digit_id := (SELECT nextval('generate_song_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 12, '0');
-
-    IF (SELECT COUNT(*) FROM album WHERE album_id = set_album_id) > 0 THEN
     INSERT INTO song
     VALUES (concat('alsg', digit_id), new_song_name,
             new_song_duration, new_song_mv, set_album_id);
