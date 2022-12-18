@@ -7,7 +7,7 @@ set_group_id VARCHAR(10))
 LANGUAGE plpgsql
 AS $$
     DECLARE digit_id VARCHAR(8);
-        generate_digit_id INTEGER;
+        generate_digit_id TEXT;
 BEGIN
     IF (SELECT group_manager FROM member_group
         WHERE group_id = set_group_id) = manager_login THEN
@@ -57,7 +57,7 @@ AS $$
 BEGIN
 END;$$;
 
-CALL add_merch('kirill_why', 'aaa', 122, 10, 'bb',
+CALL add_merch('angela_soup', 'aaa', 122, 10, 'bb',
     'gr00020001');
 CALL update_merch('mrch00000001' , new_merch_group_id := 'gr00010001');
 
