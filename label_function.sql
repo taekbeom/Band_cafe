@@ -11,14 +11,8 @@ AS $$
         digit_id VARCHAR(4);
         generate_digit_id TEXT;
         new_label_date DATE;
-        unnec INTEGER;
 BEGIN
-    IF (SELECT COUNT(*) FROM group_label) > 0 THEN
-        unnec := (SELECT setval('generate_4digit_id', (SELECT MAX(substring(label_id FROM 3 FOR 4)::INTEGER) FROM group_label)));
-    ELSE
-        unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
+    generate_digit_id := (SELECT nextval('generate_label_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 4, '0');
     new_label_id_country := new_label_country;
     IF split_part(new_label_country, ' ', 2) != '' THEN

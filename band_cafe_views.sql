@@ -12,5 +12,3 @@ CREATE OR REPLACE VIEW song_info AS
     FROM song
     JOIN album ON song.album_id = album.album_id
     JOIN member_group ON album.group_owner_id = member_group.group_id;
-
-SELECT * FROM song_info;

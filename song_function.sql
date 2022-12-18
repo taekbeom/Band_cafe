@@ -6,15 +6,8 @@ LANGUAGE plpgsql
 AS $$
     DECLARE digit_id VARCHAR(12);
         generate_digit_id TEXT;
-        unnec INTEGER;
 BEGIN
-    IF (SELECT COUNT(*) FROM song) > 0 THEN
-        unnec := (SELECT setval('generate_12digit_id',
-        (SELECT MAX(substring(song_id FROM 5 FOR 12)::INTEGER) FROM song)));
-    ELSE
-        unnec := (SELECT setval('generate_12digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_12digit_id'))::TEXT;
+    generate_digit_id := (SELECT nextval('generate_song_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 12, '0');
 
     IF (SELECT COUNT(*) FROM album WHERE album_id = set_album_id) > 0 THEN

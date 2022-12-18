@@ -10,7 +10,7 @@ IF (SELECT COUNT(*) FROM account WHERE account_login = user_login) = 0 THEN
     EXECUTE FORMAT('GRANT user_role TO %I;', user_login);
     COMMIT;
 END IF;
-END; $$;
+END;$$;
 
 CREATE OR REPLACE PROCEDURE update_user(old_login VARCHAR(32),
 new_login VARCHAR(32) DEFAULT NULL,
@@ -70,8 +70,3 @@ BEGIN
     COMMIT;
     END IF;
 END;$$;
-
-SELECT * FROM account;
-SELECT * FROM member_group;
-CALL update_group('gr00030001', manager_login := 'kirill_why')
-CALL delete_user('sanyacomeback');

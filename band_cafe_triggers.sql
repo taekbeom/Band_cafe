@@ -4,19 +4,19 @@ LANGUAGE plpgsql
 AS $$
     DECLARE set_group_name VARCHAR(128);
         digit_id VARCHAR(4);
-        generate_digit_id TEXT;
-        unnec INTEGER;
+        generate_digit_id INTEGER;
 BEGIN
     IF (SELECT COUNT(*) FROM forum
     WHERE substring(forum_id FROM 3 FOR 4) = substring(NEW.group_id FROM 7 FOR 4)) > 0 THEN
-        unnec := (SELECT setval('generate_4digit_id',
-        (SELECT MAX(substring(forum_id FROM 7 FOR 4)::INTEGER) FROM forum
-        WHERE substring(forum_id FROM 3 FOR 4) = substring(NEW.group_id FROM 7 FOR 4))));
+        generate_digit_id :=
+        (SELECT MAX(substring(forum_id FROM 7 FOR 4)::INTEGER)
+        FROM forum
+        WHERE substring(forum_id FROM 3 FOR 4)
+                  = substring(NEW.group_id FROM 7 FOR 4)) + 1;
     ELSE
-        unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
+        generate_digit_id := 1;
     END IF;
-    generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 4, '0');
+    digit_id := lpad(generate_digit_id::TEXT, 4, '0');
     set_group_name := (SELECT group_name FROM member_group
     WHERE group_id = NEW.group_id);
     INSERT INTO forum
@@ -38,21 +38,21 @@ LANGUAGE plpgsql
 AS $$
     DECLARE upd_group_id VARCHAR(10);
         digit_id VARCHAR(4);
-        generate_digit_id TEXT;
-        unnec INTEGER;
+        generate_digit_id INTEGER;
 BEGIN
         upd_group_id := (SELECT group_id FROM forum
         WHERE substring(forum_id FROM 3 FOR 4) != substring(group_id FROM 7 FOR 4));
     IF (SELECT COUNT(*) FROM forum
     WHERE substring(forum_id FROM 3 FOR 4) = substring(upd_group_id FROM 7 FOR 4)) > 0 THEN
-        unnec := (SELECT setval('generate_4digit_id',
-        (SELECT MAX(substring(forum_id FROM 7 FOR 4)::INTEGER) FROM forum
-        WHERE substring(forum_id FROM 3 FOR 4) = substring(upd_group_id FROM 7 FOR 4))));
+        generate_digit_id :=
+        (SELECT MAX(substring(forum_id FROM 7 FOR 4)::INTEGER)
+        FROM forum
+        WHERE substring(forum_id FROM 3 FOR 4)
+                  = substring(upd_group_id FROM 7 FOR 4)) + 1;
     ELSE
-        unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 4, '0');
+        generate_digit_id := 1;
+        END IF;
+    digit_id := lpad(generate_digit_id::TEXT, 4, '0');
     UPDATE forum
     SET forum_id = concat('fr', substring(upd_group_id FROM 7 FOR 4),
         digit_id)
@@ -87,15 +87,8 @@ LANGUAGE plpgsql
 AS $$
     DECLARE generate_digit_id TEXT;
     digit_id VARCHAR(8);
-    unnec INTEGER;
 BEGIN
-    IF (SELECT COUNT(*) FROM profile) > 0 THEN
-        unnec := (SELECT setval('generate_8digit_id',
-            (SELECT MAX(substring(profile_id FROM 3 FOR 8)::INTEGER) FROM profile)));
-    ELSE
-        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    generate_digit_id := (SELECT nextval('generate_profile_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 8, '0');
     INSERT INTO profile(profile_id, account_login)
     VALUES (concat('id', digit_id), NEW.account_login);
@@ -113,16 +106,8 @@ LANGUAGE plpgsql
 AS $$
     DECLARE generate_digit_id TEXT;
     digit_id VARCHAR(8);
-    unnec INTEGER;
 BEGIN
-    IF (SELECT COUNT(*) FROM shopping_cart) > 0 THEN
-        unnec := (SELECT setval('generate_8digit_id',
-            (SELECT MAX(substring(shopping_cart_id FROM 3 FOR 8)::INTEGER)
-             FROM shopping_cart)));
-    ELSE
-        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    generate_digit_id := (SELECT nextval('generate_shopping_cart_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 8, '0');
     INSERT INTO shopping_cart(shopping_cart_id, confirm_payment, account_login)
     VALUES (concat('sc', digit_id), FALSE, NEW.account_login);

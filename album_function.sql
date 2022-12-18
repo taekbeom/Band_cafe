@@ -7,15 +7,8 @@ AS $$
     DECLARE digit_id VARCHAR(8);
         generate_digit_id TEXT;
         new_album_release_date DATE;
-        unnec INTEGER;
 BEGIN
-    IF (SELECT COUNT(*) FROM album) > 0 THEN
-        unnec := (SELECT setval('generate_8digit_id',
-        (SELECT MAX(substring(album_id FROM 5 FOR 8)::INTEGER) FROM album)));
-    ELSE
-        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    generate_digit_id := (SELECT nextval('generate_album_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 8, '0');
 
     IF (is_date(new_album_release) AND

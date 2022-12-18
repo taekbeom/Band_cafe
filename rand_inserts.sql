@@ -1,7 +1,21 @@
+CALL delete_user('olleg');
+CALL delete_user('angela_soup');
+CALL delete_user('kirill_why');
+CALL delete_user('sanyacomeback');
+CALL delete_user('k_a_z_u_h_a__');
+CALL delete_user('_chaechae_1');
+CALL delete_user('choco_holic');
+CALL delete_user('ShinRyuJin');
+CALL delete_user('OhBaekwon');
+CALL delete_user('Kyujin');
+CALL delete_user('Winteo');
+CALL delete_user('riri');
+CALL delete_user('cool_oxi');
+CALL delete_user('oksusma');
+
 CALL add_user('angela_soup', '6xt$K8swNHZr0jF48jIIYuJxCeVKjK*C');
 CALL add_user('kirill_why', 'HAlM7yUvj6wc#$HCubhfD&3B0e9449KR*C');
 CALL add_user('sanyacomeback', 'shIi6UiL7Sq%1TTeLIG7lgesd@9deDDz');
-
 CALL add_user('k_a_z_u_h_a__', 'j@Osv30WsQ^tSc7X3A9qh$I0bNdjLt#G');
 CALL add_user('_chaechae_1', 'YHw^7oh9^&878S9kVrEP^ZliXUzwmJWX');
 CALL add_user('choco_holic', '^57MBuZ&6$Q833aTSvsk6I4Jyxn4w0j4');

@@ -16,18 +16,18 @@ DROP TABLE IF EXISTS shopping_order CASCADE;
 DROP TABLE IF EXISTS song CASCADE;
 DROP TABLE IF EXISTS member_profile CASCADE;
 
-CREATE TABLE account_role(
+CREATE TABLE IF NOT EXISTS account_role(
     role_id NUMERIC(1) PRIMARY KEY,
     role_name VARCHAR(32) NOT NULL UNIQUE
 );
 
-CREATE TABLE account(
+CREATE TABLE IF NOT EXISTS account(
     account_login VARCHAR(32) PRIMARY KEY ,
     account_password TEXT NOT NULL,
     role_id NUMERIC(1) NOT NULL DEFAULT 3 REFERENCES account_role(role_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE profile(
+CREATE TABLE IF NOT EXISTS profile(
     profile_id VARCHAR(10) PRIMARY KEY,
     profile_avatar_source TEXT DEFAULT NULL,
     profile_date_of_birth DATE DEFAULT NULL,
@@ -35,14 +35,14 @@ CREATE TABLE profile(
     account_login VARCHAR(32) NOT NULL UNIQUE REFERENCES account(account_login) ON UPDATE CASCADE
 );
 
-CREATE TABLE shopping_cart(
+CREATE TABLE IF NOT EXISTS shopping_cart(
     shopping_cart_id VARCHAR(10) PRIMARY KEY,
     confirm_payment BOOLEAN NOT NULL,
     user_money NUMERIC(12, 2) NOT NULL DEFAULT 0,
     account_login VARCHAR(32) NOT NULL UNIQUE REFERENCES account(account_login) ON UPDATE CASCADE
 );
 
-CREATE TABLE member_group(
+CREATE TABLE IF NOT EXISTS member_group(
     group_id VARCHAR(10) PRIMARY KEY,
     group_name VARCHAR(128) NOT NULL,
     group_country VARCHAR(64) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE member_group(
     group_manager VARCHAR(32) NOT NULL REFERENCES account(account_login) ON UPDATE CASCADE
 );
 
-CREATE TABLE merch(
+CREATE TABLE IF NOT EXISTS merch(
     merch_id VARCHAR(12) PRIMARY KEY,
     merch_name TEXT NOT NULL,
     merch_price NUMERIC(12, 2) NOT NULL,
@@ -63,17 +63,17 @@ CREATE TABLE merch(
     group_id VARCHAR(10) NOT NULL REFERENCES member_group(group_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE shopping_order(
+CREATE TABLE IF NOT EXISTS shopping_order(
     order_id VARCHAR(16) PRIMARY KEY,
     order_add_date DATE NOT NULL,
-    order_status NUMERIC(1) NOT NULL,
+    order_status NUMERIC(1) NOT NULL DEFAULT 0,
     order_address TEXT NOT NULL,
     order_amount INTEGER NOT NULL DEFAULT 1,
     shopping_cart_id VARCHAR(10) NOT NULL REFERENCES shopping_cart(shopping_cart_id) ON UPDATE CASCADE,
     merch_id VARCHAR(12) NOT NULL REFERENCES merch(merch_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE group_label(
+CREATE TABLE IF NOT EXISTS group_label(
     label_id VARCHAR(8) PRIMARY KEY,
     label_name VARCHAR(128) NOT NULL,
     label_director VARCHAR(128) NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE group_label(
     label_description_source TEXT NOT NULL
 );
 
-CREATE TABLE member(
+CREATE TABLE IF NOT EXISTS member(
     member_id VARCHAR(12) PRIMARY KEY,
     member_name VARCHAR(128) NOT NULL,
     member_stage_name VARCHAR(128) NOT NULL,
@@ -97,24 +97,24 @@ CREATE TABLE member(
     group_id VARCHAR(10) NOT NULL REFERENCES member_group(group_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE member_profile(
+CREATE TABLE IF NOT EXISTS member_profile(
     member_id VARCHAR(12) NOT NULL REFERENCES member(member_id),
     profile_id VARCHAR(10) NOT NULL REFERENCES profile(profile_id),
     PRIMARY KEY (member_id, profile_id)
 );
 
-CREATE TABLE position(
+CREATE TABLE IF NOT EXISTS position(
     position_code NUMERIC(2) PRIMARY KEY,
     position_name VARCHAR(16) NOT NULL UNIQUE
 );
 
-CREATE TABLE member_position(
+CREATE TABLE IF NOT EXISTS member_position(
     member_id VARCHAR(12) REFERENCES member(member_id) ON UPDATE CASCADE,
     position_code NUMERIC(2) REFERENCES position(position_code) ON UPDATE CASCADE,
     PRIMARY KEY (member_id, position_code)
 );
 
-CREATE TABLE album(
+CREATE TABLE IF NOT EXISTS album(
     album_id VARCHAR(12) PRIMARY KEY,
     album_name VARCHAR(128) NOT NULL,
     album_release_date DATE NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE album(
     group_owner_id VARCHAR(10) NOT NULL REFERENCES member_group(group_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE song(
+CREATE TABLE IF NOT EXISTS song(
     song_id VARCHAR(16) PRIMARY KEY,
     song_name VARCHAR(128) NOT NULL,
     song_duration NUMERIC(4) NOT NULL,
@@ -130,19 +130,19 @@ CREATE TABLE song(
     album_id VARCHAR(12) NOT NULL REFERENCES album(album_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE forum(
+CREATE TABLE IF NOT EXISTS forum(
     forum_id VARCHAR(10) PRIMARY KEY,
     forum_name TEXT NOT NULL,
     forum_description VARCHAR(64) NOT NULL,
     group_id VARCHAR(10) UNIQUE NOT NULL REFERENCES member_group(group_id) ON UPDATE CASCADE
 );
 
-CREATE TABLE post_category(
+CREATE TABLE IF NOT EXISTS post_category(
     category_id NUMERIC(2) PRIMARY KEY,
     category_name VARCHAR(32) NOT NULL UNIQUE
 );
 
-CREATE TABLE post(
+CREATE TABLE IF NOT EXISTS post(
     post_id VARCHAR(32) PRIMARY KEY,
     post_text TEXT NOT NULL,
     post_date DATE NOT NULL,

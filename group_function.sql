@@ -11,8 +11,7 @@ AS
 $$
 DECLARE
     digit_id             VARCHAR(4);
-    generate_digit_id    TEXT;
-    unnec                INTEGER;
+    generate_digit_id    INTEGER;
     new_group_debut_date DATE;
     new_group_disband_date DATE;
 BEGIN
@@ -20,14 +19,15 @@ BEGIN
                         WHERE group_label.label_id = set_label_id) THEN
         IF (SELECT COUNT(*) FROM member_group
             WHERE substring(group_id FROM 3 FOR 4) = substring(set_label_id FROM 3 FOR 4)) > 0 THEN
-            unnec := (SELECT setval('generate_4digit_id',
-            (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER) FROM member_group
-            WHERE substring(group_id FROM 3 FOR 4) = substring(set_label_id FROM 3 FOR 4))));
+            generate_digit_id :=
+            (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER)
+            FROM member_group
+            WHERE substring(group_id FROM 3 FOR 4)
+                      = substring(set_label_id FROM 3 FOR 4)) + 1;
         ELSE
-            unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
+            generate_digit_id := 1;
         END IF;
-        generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
-        digit_id := lpad(generate_digit_id, 4, '0');
+        digit_id := lpad(generate_digit_id::TEXT, 4, '0');
         IF (is_date(new_group_debut) AND
             to_date(new_group_debut, 'yyyy-mm-dd') IS NOT NULL) THEN
             new_group_debut_date := to_date(new_group_debut, 'yyyy-mm-dd');
@@ -62,8 +62,7 @@ LANGUAGE plpgsql
 AS $$
 DECLARE new_group_disband_date DATE;
     digit_id             VARCHAR(4);
-    generate_digit_id    TEXT;
-    unnec                INTEGER;
+    generate_digit_id    INTEGER;
 BEGIN
         IF (is_date(new_group_disband)) THEN
             new_group_disband_date := to_date(new_group_disband, 'yyyy-mm-dd');
@@ -87,14 +86,15 @@ BEGIN
                                 WHERE label_id = new_label_id) = 1 THEN
         IF (SELECT COUNT(*) FROM member_group
         WHERE substring(group_id FROM 3 FOR 4) = substring(new_label_id FROM 3 FOR 4)) > 0 THEN
-        unnec := (SELECT setval('generate_4digit_id',
-        (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER) FROM member_group
-        WHERE substring(group_id FROM 3 FOR 4) = substring(new_label_id FROM 3 FOR 4))));
+        generate_digit_id :=
+        (SELECT MAX(substring(group_id FROM 7 FOR 4)::INTEGER)
+        FROM member_group
+        WHERE substring(group_id FROM 3 FOR 4)
+                  = substring(new_label_id FROM 3 FOR 4)) + 1;
     ELSE
-        unnec := (SELECT setval('generate_4digit_id', 1, FALSE));
+        generate_digit_id := 1;
     END IF;
-    generate_digit_id := (SELECT nextval('generate_4digit_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 4, '0');
+    digit_id := lpad(generate_digit_id::TEXT, 4, '0');
         UPDATE member_group
         SET group_id = concat('gr',
             substring(new_label_id FROM 3 FOR 4),

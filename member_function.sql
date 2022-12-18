@@ -13,16 +13,9 @@ AS $$
         generate_digit_id TEXT;
         new_member_date DATE;
         set_label_id VARCHAR(8);
-        unnec INTEGER;
 BEGIN
     IF (SELECT COUNT(*) FROM account WHERE account_login = member_account_login) THEN
-        IF (SELECT COUNT(*) FROM member) > 0 THEN
-        unnec := (SELECT setval('generate_8digit_id',
-        (SELECT MAX(substring(member_id FROM 5 FOR 8)::INTEGER) FROM member)));
-    ELSE
-        unnec := (SELECT setval('generate_8digit_id', 1, FALSE));
-    END IF;
-    generate_digit_id := (SELECT nextval('generate_8digit_id'))::TEXT;
+    generate_digit_id := (SELECT nextval('generate_member_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 8, '0');
         IF (is_date(new_member_string_date)) THEN
             new_member_date := to_date(new_member_string_date, 'yyyy-mm-dd');

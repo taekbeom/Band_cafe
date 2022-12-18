@@ -13,11 +13,7 @@ CREATE ROLE member_role;
 CREATE ROLE manager_role;
 CREATE ROLE admin_role;
 
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE generate_4digit_id
-    TO admin_role, manager_role, member_role, user_role;
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE generate_8digit_id
-    TO admin_role, manager_role, member_role, user_role;
-GRANT USAGE, SELECT, UPDATE ON SEQUENCE generate_12digit_id
+GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public
     TO admin_role, manager_role, member_role, user_role;
 
 
