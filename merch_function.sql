@@ -26,7 +26,6 @@ new_merch_name TEXT DEFAULT NULL,
 new_merch_price NUMERIC(12, 2) DEFAULT NULL,
 new_merch_status BOOLEAN DEFAULT NULL,
 new_merch_amount INTEGER DEFAULT NULL,
-new_merch_description TEXT DEFAULT NULL,
 new_merch_group_id VARCHAR(10) DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
@@ -43,8 +42,6 @@ BEGIN
             merch_price = COALESCE(new_merch_price, merch_price),
             merch_status = COALESCE(new_merch_status, merch_status),
             merch_amount = COALESCE(new_merch_amount, merch_amount),
-            merch_description_source =
-                COALESCE(new_merch_description, merch_description_source),
             group_id = COALESCE(new_merch_group_id, group_id)
             WHERE merch_id = upd_merch_id;
     END IF;

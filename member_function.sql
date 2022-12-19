@@ -59,7 +59,6 @@ new_member_stage_name VARCHAR(128) DEFAULT NULL,
 new_member_string_date TEXT DEFAULT NULL,
 new_member_country VARCHAR(64) DEFAULT NULL,
 new_member_city VARCHAR(64) DEFAULT NULL,
-new_member_description TEXT DEFAULT NULL,
 new_member_height NUMERIC(3) DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
@@ -83,8 +82,6 @@ BEGIN
         member_country = COALESCE(new_member_country, member_country),
         member_city = COALESCE(new_member_city, member_city),
         member_height = new_member_height,
-        member_description_source = COALESCE(new_member_description,
-            member_description_source),
         label_id = COALESCE(ref_label_id, label_id),
         group_id = COALESCE(ref_group_id, group_id)
         WHERE member_id = upd_member_id;

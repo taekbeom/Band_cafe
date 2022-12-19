@@ -58,23 +58,19 @@ CALL add_label('Source Music', 'Со Сонджин',
 
 CALL add_group('aespa', 'Korea',
     '2020-11-17', 'MY',
-    'desc1', 'angela_soup',
-    'lb0001KO');
+    'desc1', 'angela_soup');
 
 CALL add_group('ITZY', 'Korea',
     '2019-02-12', 'MIDZY',
-    'desc2', 'angela_soup',
-    'lb0002KO');
+    'desc2', 'angela_soup');
 
 CALL add_group('NMIXX', 'Korea',
     '2020-11-17', 'NSWER',
-    'desc3', 'kirill_why',
-    'lb0002KO');
+    'desc3', 'kirill_why');
 
 CALL add_group('LE SSERAFIM', 'Korea',
     '2022-05-02', 'FEARNOT',
-    'desc4', 'sanyacomeback',
-    'lb0003KO');
+    'desc4', 'sanyacomeback');
 
 CALL add_album('gr00020001', 'IT''Z ME',
     '2020-03-09');
