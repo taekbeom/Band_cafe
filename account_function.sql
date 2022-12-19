@@ -65,6 +65,11 @@ BEGIN
     IF (SELECT COUNT(*) FROM account WHERE account_login = delete_login) THEN
     EXECUTE FORMAT('DROP USER %I', delete_login);
     DELETE FROM profile WHERE account_login = delete_login;
+    DELETE FROM shopping_order WHERE
+    shopping_cart_id = (SELECT DISTINCT shopping_cart.shopping_cart_id FROM shopping_cart
+                        JOIN shopping_order ON shopping_order.shopping_cart_id =
+                                              shopping_cart.shopping_cart_id
+                        WHERE account_login = delete_login);
     DELETE FROM shopping_cart WHERE account_login = delete_login;
     DELETE FROM account WHERE account_login = delete_login;
     COMMIT;

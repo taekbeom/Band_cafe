@@ -37,7 +37,6 @@ CREATE TABLE IF NOT EXISTS profile(
 
 CREATE TABLE IF NOT EXISTS shopping_cart(
     shopping_cart_id VARCHAR(10) PRIMARY KEY,
-    confirm_payment BOOLEAN NOT NULL,
     user_money NUMERIC(12, 2) NOT NULL DEFAULT 0,
     account_login VARCHAR(32) NOT NULL UNIQUE REFERENCES account(account_login) ON UPDATE CASCADE
 );
@@ -65,8 +64,9 @@ CREATE TABLE IF NOT EXISTS merch(
 
 CREATE TABLE IF NOT EXISTS shopping_order(
     order_id VARCHAR(16) PRIMARY KEY,
-    order_add_date DATE NOT NULL,
+    order_add_date DATE,
     order_status NUMERIC(1) NOT NULL DEFAULT 0,
+    confirm_payment BOOLEAN NOT NULL DEFAULT FALSE,
     order_address TEXT NOT NULL,
     order_amount INTEGER NOT NULL DEFAULT 1,
     shopping_cart_id VARCHAR(10) NOT NULL REFERENCES shopping_cart(shopping_cart_id) ON UPDATE CASCADE,

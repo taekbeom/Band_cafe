@@ -34,8 +34,7 @@ new_label_name VARCHAR(128) DEFAULT NULL,
 new_label_director VARCHAR(128) DEFAULT NULL,
 new_label_country VARCHAR(64) DEFAULT NULL,
 new_label_city VARCHAR(64) DEFAULT NULL,
-new_label_address TEXT DEFAULT NULL,
-new_label_description TEXT DEFAULT NULL)
+new_label_address TEXT DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
     DECLARE new_label_id_country VARCHAR(64);
@@ -45,8 +44,7 @@ BEGIN
     label_director = COALESCE(new_label_director, label_director),
     label_country = COALESCE(new_label_country, label_country),
     label_city = COALESCE(new_label_city, label_city),
-    label_main_address = COALESCE(new_label_address, label_main_address),
-    label_description_source = COALESCE(new_label_description, label_description_source)
+    label_main_address = COALESCE(new_label_address, label_main_address)
     WHERE label_id = upd_label_id;
     IF new_label_country IS NOT NULL THEN
     new_label_id_country := new_label_country;

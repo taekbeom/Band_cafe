@@ -49,20 +49,3 @@ BEGIN
             WHERE merch_id = upd_merch_id;
     END IF;
 END;$$;
-
-CALL add_merch('angela_soup', 'aaa', 122, 10, 'bb',
-    'gr00020001');
-CALL update_merch('mrch00000001' , new_merch_group_id := 'gr00010001', new_merch_amount := 50);
-
-SELECT * FROM merch;
-SELECT * FROM member_group;
-DELETE FROM merch;
-
-DROP PROCEDURE update_merch(upd_merch_id VARCHAR(12),
-manager_login VARCHAR(32),
-new_merch_name TEXT,
-new_merch_price NUMERIC(12, 2),
-new_merch_status BOOLEAN,
-new_merch_amount INTEGER,
-new_merch_description TEXT,
-new_merch_group_id VARCHAR(10))

@@ -109,8 +109,8 @@ AS $$
 BEGIN
     generate_digit_id := (SELECT nextval('generate_shopping_cart_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 8, '0');
-    INSERT INTO shopping_cart(shopping_cart_id, confirm_payment, account_login)
-    VALUES (concat('sc', digit_id), FALSE, NEW.account_login);
+    INSERT INTO shopping_cart(shopping_cart_id, account_login)
+    VALUES (concat('sc', digit_id), NEW.account_login);
     RETURN NULL;
 END;$$;
 
