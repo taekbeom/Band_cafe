@@ -1,4 +1,5 @@
 CREATE OR REPLACE PROCEDURE add_member(member_account_login VARCHAR(32),
+ref_label_id VARCHAR(10),
 ref_group_id VARCHAR(10),
 new_member_name VARCHAR(128),
 new_member_stage_name VARCHAR(128),
@@ -12,7 +13,6 @@ AS $$
     DECLARE digit_id VARCHAR(8);
         generate_digit_id TEXT;
         new_member_date DATE;
-        set_label_id VARCHAR(8);
 BEGIN
     IF (SELECT COUNT(*) FROM account WHERE account_login = member_account_login) THEN
         IF (is_date(new_member_string_date)) THEN
@@ -21,16 +21,13 @@ BEGIN
             new_member_date := NULL;
         END IF;
         IF new_member_date IS NOT NULL THEN
-            set_label_id := (SELECT label_id FROM group_label
-                    WHERE substring(group_label.label_id FROM 3 FOR 4)
-                    = substring(ref_group_id FROM 3 FOR 4));
             generate_digit_id := (SELECT nextval('generate_member_id'))::TEXT;
             digit_id := lpad(generate_digit_id, 8, '0');
             INSERT INTO member
             VALUES (concat('mmbr', digit_id), new_member_name,
                     new_member_stage_name, new_member_date, new_member_country,
                     new_member_city, new_member_height, new_member_description,
-                    set_label_id, ref_group_id);
+                    ref_label_id, ref_group_id);
             INSERT INTO member_profile
             VALUES (concat('mmbr', digit_id),
                     (SELECT profile_id FROM profile
