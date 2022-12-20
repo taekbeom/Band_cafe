@@ -48,29 +48,29 @@ CALL update_user('sanyacomeback', new_role_id := 1);
 
 CALL add_label('SM Entertainment', 'И Суман',
     'Korea', 'Seoul', 'sm_address',
-    '1995-02-14', 'description1');
+    '1995-02-14', 'description1.txt');
 CALL add_label('JYP Entertainment', 'Пак Чинён',
     'Korea', 'Seoul', 'Кандонгу',
-    '1997-04-25', 'description2');
+    '1997-04-25', 'description2.txt');
 CALL add_label('Source Music', 'Со Сонджин',
     'Korea', 'Seoul', 'source_address',
-    '2009-11-17', 'description3');
+    '2009-11-17', 'description3.txt');
 
 CALL add_group('aespa', 'Korea',
     '2020-11-17', 'MY',
-    'desc1', 'angela_soup');
+    'desc1.txt', 'angela_soup');
 
 CALL add_group('ITZY', 'Korea',
     '2019-02-12', 'MIDZY',
-    'desc2', 'angela_soup');
+    'desc2.txt', 'angela_soup');
 
 CALL add_group('NMIXX', 'Korea',
     '2020-11-17', 'NSWER',
-    'desc3', 'kirill_why');
+    'desc3.txt', 'kirill_why');
 
 CALL add_group('LE SSERAFIM', 'Korea',
     '2022-05-02', 'FEARNOT',
-    'desc4', 'sanyacomeback');
+    'desc4.txt', 'sanyacomeback');
 
 CALL add_album('gr00020001', 'IT''Z ME',
     '2020-03-09');
@@ -99,45 +99,45 @@ CALL add_song('albm00000002', 'Freaky',
 CALL add_song('albm00000003', 'Black Mamba',
     174, 'song_mv3');
 
-CALl add_member('k_a_z_u_h_a__', 'gr00030001',
+CALl add_member('k_a_z_u_h_a__','lb0003KO','gr00000004',
     'Накамура Кадзуха', 'Кадзуха',
     '2003-08-09', 'Japan',
-    'Kochi', 'descr1', 170);
+    'Kochi', 'descr1.txt', 170);
 
-CALl add_member('_chaechae_1', 'gr00030001',
+CALl add_member('_chaechae_1', 'lb0003KO','gr00000004',
     'Ким Чэвон', 'Ким Чэвон',
     '2000-08-01', 'Korea',
-    'Seoul', 'descr2', 163);
+    'Seoul', 'descr2.txt', 163);
 
-CALl add_member('choco_holic', 'gr00020001',
+CALl add_member('choco_holic', 'lb0002KO','gr00000002',
     'И Чэрён', 'Чэрён',
     '2001-06-05', 'Korea',
-    'Yongin', 'descr3', 166);
+    'Yongin', 'descr3.txt', 166);
 
-CALl add_member('ShinRyuJin', 'gr00020001',
+CALl add_member('ShinRyuJin', 'lb0002KO','gr00000002',
     'Шин Рюджин', 'Рюджин',
     '2001-04-17', 'Korea',
-    'Seoul', 'descr4', 164);
+    'Seoul', 'descr4.txt', 164);
 
-CALl add_member('OhBaekwon', 'gr00020002',
+CALl add_member('OhBaekwon', 'lb0002KO','gr00000003',
     'О Хэвон', 'Хэвон',
     '2003-02-25', 'Korean',
-    'Incheon', 'descr5', 163);
+    'Incheon', 'descr5.txt', 163);
 
-CALl add_member('Kyujin', 'gr00020002',
+CALl add_member('Kyujin', 'lb0002KO','gr00000003',
     'Чжан Кюджин', 'Кюджин',
     '2006-05-26', 'Korean',
-    'Gyeonggi-do', 'descr6', 166);
+    'Gyeonggi-do', 'descr6.txt', 166);
 
-CALl add_member('Winteo', 'gr00010001',
+CALl add_member('Winteo', 'lb0001KO','gr00000001',
     'Ким Минджон', 'Винтер',
     '2001-01-01', 'Korea',
-    'Busan', 'descr7');
+    'Busan', 'descr7.txt');
 
-CALl add_member('riri', 'gr00010001',
+CALl add_member('riri', 'lb0001KO', 'gr00000001',
     'Учинага Эри', 'Жизель',
     '2000-10-30', 'Korea',
-    'Garosu-gil', 'descr8', 163);
+    'Garosu-gil', 'descr8.txt', 163);
 
 CALL add_post('fr00010001', 'Winteo',
     'I''m sick of AI', null, null,
