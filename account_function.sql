@@ -21,6 +21,7 @@ AS $$
     DECLARE login_change VARCHAR(32);
         role_id_change NUMERIC(1);
         role_name_change VARCHAR(32);
+        dlt_member_id VARCHAR(12);
 BEGIN
         login_change := (SELECT COALESCE(new_login,
             (SELECT account_login FROM account
@@ -30,6 +31,15 @@ BEGIN
                                   WHERE account_login = old_login)));
         role_name_change := (SELECT role_name FROM account_role
                                               WHERE role_id = role_id_change);
+        IF role_id_change <> 2 AND (SELECT role_id FROM account
+                                    WHERE account_login = old_login) = 2 THEN
+            dlt_member_id := (SELECT member.member_id FROM member
+            JOIN member_profile ON member.member_id =
+                                   member_profile.member_id
+            JOIN profile ON member_profile.profile_id = profile.profile_id
+                             WHERE account_login = old_login);
+            CALL delete_member(dlt_member_id);
+        END IF;
         EXECUTE FORMAT('REVOKE %I FROM %I;',
             (SELECT role_name FROM account_role
             WHERE role_id = (SELECT role_id FROM account
@@ -61,8 +71,18 @@ END;$$;
 CREATE OR REPLACE PROCEDURE delete_user(delete_login VARCHAR(32))
 LANGUAGE plpgsql
 AS $$
+    DECLARE dlt_member_id VARCHAR(12);
 BEGIN
     IF (SELECT COUNT(*) FROM account WHERE account_login = delete_login) THEN
+    IF (SELECT role_id FROM account
+                                WHERE account_login = delete_login) = 2 THEN
+        dlt_member_id := (SELECT member.member_id FROM member
+        JOIN member_profile ON member.member_id =
+                               member_profile.member_id
+        JOIN profile ON member_profile.profile_id = profile.profile_id
+                         WHERE account_login = delete_login);
+        CALL delete_member(dlt_member_id);
+    END IF;
     EXECUTE FORMAT('DROP USER %I', delete_login);
     DELETE FROM profile WHERE account_login = delete_login;
     DELETE FROM shopping_order WHERE
