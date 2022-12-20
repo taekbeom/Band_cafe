@@ -13,50 +13,25 @@ END IF;
 END;$$;
 
 CREATE OR REPLACE PROCEDURE update_user(old_login VARCHAR(32),
-new_login VARCHAR(32) DEFAULT NULL,
-new_password TEXT DEFAULT NULL,
-new_role_id NUMERIC(1) DEFAULT NULL)
+new_password TEXT,
+new_login VARCHAR(32) DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
     DECLARE login_change VARCHAR(32);
-        role_id_change NUMERIC(1);
-        role_name_change VARCHAR(32);
-        dlt_member_id VARCHAR(12);
 BEGIN
         login_change := (SELECT COALESCE(new_login,
             (SELECT account_login FROM account
                                   WHERE account_login = old_login)));
-        role_id_change := (SELECT COALESCE(new_role_id,
-            (SELECT role_id FROM account
-                                  WHERE account_login = old_login)));
-        role_name_change := (SELECT role_name FROM account_role
-                                              WHERE role_id = role_id_change);
-        IF role_id_change <> 2 AND (SELECT role_id FROM account
-                                    WHERE account_login = old_login) = 2 THEN
-            dlt_member_id := (SELECT member.member_id FROM member
-            JOIN member_profile ON member.member_id =
-                                   member_profile.member_id
-            JOIN profile ON member_profile.profile_id = profile.profile_id
-                             WHERE account_login = old_login);
-            CALL delete_member(dlt_member_id);
-        END IF;
-        EXECUTE FORMAT('REVOKE %I FROM %I;',
-            (SELECT role_name FROM account_role
-            WHERE role_id = (SELECT role_id FROM account
-            WHERE account_login = old_login)),
-            old_login);
-        EXECUTE FORMAT('GRANT user_role TO %I',
-            old_login);
-        IF role_id_change < 3 THEN
-        EXECUTE FORMAT('GRANT %I TO %I;',
-            role_name_change, old_login);
+
+        IF new_password IS NOT NULL AND length(new_password)>0 THEN
+            new_password := crypt(new_password, gen_salt('bf', 8));
+        ELSE
+            new_password := NULL;
         END IF;
 
         UPDATE account SET
     account_login = login_change,
-    account_password = COALESCE(crypt(new_password, gen_salt('bf', 8)),
-        account_password),
-    role_id = role_id_change
+    account_password = COALESCE(new_password, account_password)
     WHERE account_login = old_login;
     IF new_password IS NOT NULL THEN
         EXECUTE FORMAT('ALTER USER %I WITH PASSWORD %L;',
@@ -65,6 +40,38 @@ BEGIN
     IF old_login != login_change THEN
         EXECUTE FORMAT('ALTER USER %I RENAME TO %I;',
             old_login, login_change);
+    END IF;
+END;$$;
+
+CREATE OR REPLACE PROCEDURE update_role(user_login VARCHAR(32),
+login_change VARCHAR(32),
+new_role_id NUMERIC(1))
+LANGUAGE plpgsql
+AS $$
+    DECLARE new_role_name VARCHAR(32);
+        old_role_name VARCHAR(32);
+BEGIN
+    IF new_role_id IS NOT NULL AND
+    new_role_id != (SELECT role_id FROM account
+                      WHERE account_login = login_change)
+    AND (SELECT role_id FROM account
+                        WHERE account_login = user_login) = 0 THEN
+        new_role_name := (SELECT role_name FROM account_role
+        WHERE role_id = new_role_id);
+        old_role_name := (SELECT role_name FROM account_role
+        JOIN account ON account_role.role_id = account.role_id
+        WHERE account_login = login_change);
+        IF (SELECT role_id FROM account
+                           WHERE account_login = login_change) = 1 THEN
+            EXECUTE FORMAT('REVOKE %I FROM %I', old_role_name,
+                login_change);
+        END IF;
+        IF new_role_id < 4 and new_role_id != 2 THEN
+            EXECUTE FORMAT('GRANT %I TO %I', new_role_name,
+                    login_change);
+            UPDATE account SET role_id = new_role_id
+            WHERE account_login = login_change;
+        END IF;
     END IF;
 END;$$;
 

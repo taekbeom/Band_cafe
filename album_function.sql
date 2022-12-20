@@ -50,5 +50,6 @@ CREATE OR REPLACE PROCEDURE delete_album(dlt_album_id VARCHAR(12))
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    DELETE FROM song WHERE album_id = dlt_album_id;
     DELETE FROM album WHERE album_id = dlt_album_id;
 END;$$;

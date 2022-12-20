@@ -14,7 +14,10 @@ AS $$
         generate_digit_id TEXT;
         new_member_date DATE;
 BEGIN
-    IF (SELECT COUNT(*) FROM account WHERE account_login = member_account_login) THEN
+    IF (SELECT COUNT(*) FROM account WHERE account_login
+                                               = member_account_login) = 1
+    AND (SELECT role_id FROM account WHERE account_login
+                                               = member_account_login) = 3 THEN
         IF (is_date(new_member_string_date)) THEN
             new_member_date := to_date(new_member_string_date, 'yyyy-mm-dd');
         ELSE
@@ -32,8 +35,13 @@ BEGIN
             VALUES (concat('mmbr', digit_id),
                     (SELECT profile_id FROM profile
                                        WHERE account_login = member_account_login));
-            CALL update_user(member_account_login,
-                NULL, NULL, 2);
+            EXECUTE FORMAT('GRANT member_role TO %I',
+                    member_account_login);
+            UPDATE account SET role_id = 2
+            WHERE account_login = member_account_login;
+            UPDATE profile
+            SET profile_date_of_birth = new_member_date
+            WHERE account_login = member_account_login;
             COMMIT ;
         END IF;
     END IF;
@@ -78,16 +86,34 @@ BEGIN
         member_date_of_birth = COALESCE(new_member_date, member_date_of_birth),
         member_country = COALESCE(new_member_country, member_country),
         member_city = COALESCE(new_member_city, member_city),
-        member_height = new_member_height,
+        member_height = COALESCE(new_member_height, member_height),
         label_id = COALESCE(ref_label_id, label_id),
         group_id = COALESCE(ref_group_id, group_id)
         WHERE member_id = upd_member_id;
+        UPDATE profile
+        SET profile_date_of_birth = COALESCE(new_member_date,
+            profile_date_of_birth)
+        WHERE account_login = (SELECT account_login FROM profile
+                            JOIN member_profile ON profile.profile_id
+                                                       = member_profile.profile_id
+                             WHERE member_id = upd_member_id);
 END;$$;
 
 CREATE OR REPLACE PROCEDURE delete_member(dlt_member_id VARCHAR(12))
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    EXECUTE FORMAT('REVOKE member_role FROM %I',
+        (SELECT account_login FROM profile
+    JOIN member_profile ON profile.profile_id =
+                           member_profile.profile_id
+    WHERE member_id = dlt_member_id));
+    UPDATE account
+    SET role_id = 3
+    WHERE account_login = (SELECT account_login FROM profile
+    JOIN member_profile ON profile.profile_id =
+                           member_profile.profile_id
+    WHERE member_id = dlt_member_id);
     DELETE FROM member_profile
     WHERE member_id = dlt_member_id;
     DELETE FROM member_position
