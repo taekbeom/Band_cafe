@@ -47,6 +47,12 @@ LANGUAGE plpgsql
 AS $$
 DECLARE new_group_disband_date DATE;
 BEGIN
+    IF new_group_name IS NOT NULL AND length(new_group_name) = 0 THEN
+            new_group_name := NULL;
+        END IF;
+    IF new_group_fandom_name IS NOT NULL AND length(new_group_fandom_name) = 0 THEN
+            new_group_fandom_name := NULL;
+        END IF;
     IF (is_date(new_group_disband)) THEN
         new_group_disband_date := to_date(new_group_disband, 'yyyy-mm-dd');
     ELSE

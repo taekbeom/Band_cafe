@@ -7,6 +7,9 @@ AS $$
     DECLARE digit_id VARCHAR(12);
         generate_digit_id TEXT;
 BEGIN
+    IF new_song_mv IS NOT NULL AND length(new_song_mv) = 0 THEN
+            new_song_mv := NULL;
+        END IF;
     IF (SELECT COUNT(*) FROM album WHERE album_id = set_album_id) > 0 THEN
     generate_digit_id := (SELECT nextval('generate_song_id'))::TEXT;
     digit_id := lpad(generate_digit_id, 12, '0');
@@ -23,6 +26,12 @@ new_song_mv TEXT DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    IF new_song_name IS NOT NULL AND length(new_song_name) = 0 THEN
+            new_song_name := NULL;
+        END IF;
+    IF new_song_mv IS NOT NULL AND length(new_song_mv) = 0 THEN
+            new_song_mv := NULL;
+        END IF;
     UPDATE song
     SET song_name = COALESCE(new_song_name, song_name),
     song_duration = COALESCE(new_song_duration, song_duration),

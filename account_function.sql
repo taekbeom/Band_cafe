@@ -8,6 +8,7 @@ IF (SELECT COUNT(*) FROM account WHERE account_login = user_login) = 0 THEN
     VALUES(user_login, crypt(user_password, gen_salt('bf', 8)));
     EXECUTE FORMAT('CREATE USER %I WITH PASSWORD %L;', user_login, user_password);
     EXECUTE FORMAT('GRANT user_role TO %I;', user_login);
+    EXECUTE FORMAT('ALTER USER %I CREATEROLE;', user_login);
     COMMIT;
 END IF;
 END;$$;
@@ -19,6 +20,9 @@ LANGUAGE plpgsql
 AS $$
     DECLARE login_change VARCHAR(32);
 BEGIN
+        IF new_login IS NOT NULL AND length(new_login) = 0 THEN
+            new_login := NULL;
+        END IF;
         login_change := (SELECT COALESCE(new_login,
             (SELECT account_login FROM account
                                   WHERE account_login = old_login)));

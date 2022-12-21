@@ -9,6 +9,9 @@ new_category_id NUMERIC(2) DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    IF new_reply_post_id IS NOT NULL AND length(new_reply_post_id) = 0 THEN
+            new_reply_post_id := NULL;
+        END IF;
     IF (SELECT COUNT(*) FROM forum
                         WHERE forum_id = set_forum_id) > 0
     AND (SELECT COUNT(*) FROM account
@@ -49,6 +52,9 @@ new_category_id NUMERIC(2) DEFAULT NULL)
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    IF new_post_text IS NOT NULL AND length(new_post_text) = 0 THEN
+            new_post_text := NULL;
+        END IF;
     IF (new_category_id IS NULL) THEN
         new_category_id := (SELECT category_id FROM post
         WHERE post_id = upd_post_id);

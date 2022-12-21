@@ -6,6 +6,9 @@ LANGUAGE plpgsql
 AS $$
     DECLARE new_profile_date DATE;
 BEGIN
+        IF new_profile_description IS NOT NULL AND length(new_profile_description) = 0 THEN
+            new_profile_description := NULL;
+        END IF;
         new_profile_date := (SELECT profile_date_of_birth FROM profile
         WHERE account_login = upd_account_login);
         IF new_profile_description IS NOT NULL AND

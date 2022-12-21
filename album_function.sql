@@ -34,6 +34,9 @@ LANGUAGE plpgsql
 AS $$
     DECLARE new_album_release_date DATE;
 BEGIN
+        IF new_album_name IS NOT NULL AND length(new_album_name) = 0 THEN
+            new_album_name := NULL;
+        END IF;
     IF (is_date(new_album_release)) THEN
         new_album_release_date := to_date(new_album_release, 'yyyy-mm-dd');
     ELSE

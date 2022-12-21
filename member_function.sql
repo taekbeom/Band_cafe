@@ -18,6 +18,9 @@ BEGIN
                                                = member_account_login) = 1
     AND (SELECT role_id FROM account WHERE account_login
                                                = member_account_login) = 3 THEN
+        IF new_member_height IS NOT NULL AND new_member_height = 0 THEN
+            new_member_height := NULL;
+        END IF;
         IF (is_date(new_member_string_date)) THEN
             new_member_date := to_date(new_member_string_date, 'yyyy-mm-dd');
         ELSE
@@ -69,6 +72,21 @@ LANGUAGE plpgsql
 AS $$
     DECLARE new_member_date DATE;
 BEGIN
+        IF new_member_name IS NOT NULL AND length(new_member_name) = 0 THEN
+            new_member_name := NULL;
+        END IF;
+        IF new_member_stage_name IS NOT NULL AND length(new_member_stage_name) = 0 THEN
+            new_member_stage_name := NULL;
+        END IF;
+        IF new_member_country IS NOT NULL AND length(new_member_country) = 0 THEN
+            new_member_country := NULL;
+        END IF;
+        IF new_member_city IS NOT NULL AND length(new_member_city) = 0 THEN
+            new_member_city := NULL;
+        END IF;
+        IF new_member_height IS NOT NULL AND new_member_height = 0 THEN
+            new_member_height := NULL;
+        END IF;
         IF (SELECT COUNT(*) FROM group_label WHERE label_id = ref_label_id) = 0 THEN
             ref_label_id = NULL;
         END IF;

@@ -39,6 +39,18 @@ LANGUAGE plpgsql
 AS $$
     DECLARE new_label_id_country VARCHAR(64);
 BEGIN
+    IF new_label_name IS NOT NULL AND length(new_label_name) = 0 THEN
+            new_label_name := NULL;
+        END IF;
+    IF new_label_director IS NOT NULL AND length(new_label_director) = 0 THEN
+            new_label_director := NULL;
+        END IF;
+    IF new_label_city IS NOT NULL AND length(new_label_city) = 0 THEN
+            new_label_city := NULL;
+        END IF;
+    IF new_label_address IS NOT NULL AND length(new_label_address) = 0 THEN
+            new_label_address := NULL;
+        END IF;
     UPDATE group_label SET
     label_name = COALESCE(new_label_name, label_name),
     label_director = COALESCE(new_label_director, label_director),

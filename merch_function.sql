@@ -31,6 +31,18 @@ LANGUAGE plpgsql
 AS $$
     DECLARE manager_login VARCHAR(32);
 BEGIN
+        IF new_merch_name IS NOT NULL AND length(new_merch_name) = 0 THEN
+            new_merch_name := NULL;
+        END IF;
+        IF new_merch_group_id IS NOT NULL AND length(new_merch_group_id) = 0 THEN
+            new_merch_group_id := NULL;
+        END IF;
+        IF new_merch_price IS NOT NULL AND new_merch_price = 0 THEN
+            new_merch_price := NULL;
+        END IF;
+        IF new_merch_amount IS NOT NULL AND new_merch_amount = 0 THEN
+            new_merch_amount := NULL;
+        END IF;
         manager_login := (SELECT group_manager FROM member_group
                         JOIN merch ON member_group.group_id = merch.group_id
                         WHERE merch_id = upd_merch_id);

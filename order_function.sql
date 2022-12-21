@@ -36,6 +36,12 @@ select_confirm BOOLEAN DEFAULT FALSE)
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    IF new_order_address IS NOT NULL AND length(new_order_address) = 0 THEN
+            new_order_address := NULL;
+        END IF;
+    IF new_order_amount IS NOT NULL AND new_order_amount = 0 THEN
+            new_order_amount := NULL;
+        END IF;
     IF NOT (SELECT confirm_payment FROM shopping_order
         WHERE order_id = upd_order_id) THEN
             UPDATE shopping_order
