@@ -17,23 +17,29 @@ GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public
     TO admin_role, manager_role, member_role, user_role;
 
 
-GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA public TO admin_role;
+GRANT INSERT, UPDATE, DELETE ON
+    account, profile, shopping_order,shopping_cart,
+    post TO manager_role, member_role, user_role;
 
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO manager_role, member_role, user_role;
+GRANT UPDATE ON merch TO manager_role, member_role, user_role;
 
-GRANT INSERT, UPDATE ON account, album, forum, member, member_group,
-    member_position, member_profile, merch, post_category, profile,
-    shopping_cart, song TO manager_role;
-GRANT UPDATE(order_status) ON shopping_order TO manager_role;
+GRANT DELETE, UPDATE ON member TO member_role;
 
-GRANT DELETE ON account, album, member, member_position,
-    member_profile, merch, post, post_category,
-    profile, shopping_cart, shopping_order, song TO manager_role;
+GRANT DELETE ON member_profile, member_position, member
+    TO member_role;
 
-GRANT INSERT, UPDATE, DELETE ON account, post_category, profile,
-    shopping_cart, shopping_order TO member_role, user_role;
+GRANT INSERT, UPDATE, DELETE ON
+    album, member, song
+    TO manager_role;
 
-GRANT UPDATE(post_text, post_image_source, category_id) ON post TO user_role;
+GRANT INSERT, UPDATE ON
+    forum, member_group, group_label, merch
+    TO manager_role;
+
+GRANT INSERT, DELETE ON
+    member_profile, member_position
+    TO manager_role;
+
 
 ALTER TABLE album ENABLE ROW LEVEL SECURITY;
 ALTER TABLE forum ENABLE ROW LEVEL SECURITY;
