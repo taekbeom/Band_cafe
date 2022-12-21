@@ -33,7 +33,7 @@ BEGIN
             new_password := NULL;
         END IF;
 
-        UPDATE account SET
+    UPDATE account SET
     account_login = login_change,
     account_password = COALESCE(new_password, account_password)
     WHERE account_login = old_login;
@@ -66,11 +66,13 @@ BEGIN
         JOIN account ON account_role.role_id = account.role_id
         WHERE account_login = login_change);
         IF (SELECT role_id FROM account
-                           WHERE account_login = login_change) = 1 THEN
+                           WHERE account_login = login_change) = 1 OR
+        (SELECT role_id FROM account
+                           WHERE account_login = login_change) = 3   THEN
             EXECUTE FORMAT('REVOKE %I FROM %I', old_role_name,
                 login_change);
         END IF;
-        IF new_role_id < 4 and new_role_id != 2 THEN
+        IF new_role_id != 2 THEN
             EXECUTE FORMAT('GRANT %I TO %I', new_role_name,
                     login_change);
             UPDATE account SET role_id = new_role_id

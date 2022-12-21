@@ -38,6 +38,8 @@ BEGIN
             VALUES (concat('mmbr', digit_id),
                     (SELECT profile_id FROM profile
                                        WHERE account_login = member_account_login));
+            EXECUTE FORMAT('REVOKE user_role FROM %I',
+                    member_account_login);
             EXECUTE FORMAT('GRANT member_role TO %I',
                     member_account_login);
             UPDATE account SET role_id = 2
@@ -122,6 +124,11 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     EXECUTE FORMAT('REVOKE member_role FROM %I',
+        (SELECT account_login FROM profile
+    JOIN member_profile ON profile.profile_id =
+                           member_profile.profile_id
+    WHERE member_id = dlt_member_id));
+    EXECUTE FORMAT('GRANT user_role TO %I',
         (SELECT account_login FROM profile
     JOIN member_profile ON profile.profile_id =
                            member_profile.profile_id
