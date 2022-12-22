@@ -1,0 +1,10 @@
+To work with Band_cafe_database thou need to:
+1. Execute band_cafe_tables
+2. basic_function
+3. band_cafe_triggers
+4. band_cafe_permissions (no roledrop if you are new)
+5. band_cafe_insert
+6. band_cafe_views
+7. all having _function and _procedure in name
+8. dont_talk
+9. rand_inserts

@@ -72,16 +72,16 @@ CALL add_group('LE SSERAFIM', 'Korea',
     '2022-05-02', 'FEARNOT',
     'desc4.txt', 'sanyacomeback');
 
-CALL add_album('gr00020001', 'IT''Z ME',
+CALL add_album('gr00000004', 'IT''Z ME',
     '2020-03-09');
 
-CALL add_album('gr00020001', 'CHESHIRE',
+CALL add_album('gr00000003', 'CHESHIRE',
     '2022-11-30','album_cover_path');
 
-CALL add_album('gr00010001', 'Black Mamba/Single',
+CALL add_album('gr00000001', 'Black Mamba/Single',
     '2020-11-17', 'album_cover_path2');
 
-CALL add_song('albm00000001', 'WANNABE',
+CALL add_song('albm00000002', 'WANNABE',
     191, 'song_mv1');
 
 CALL add_song('albm00000001', '24HRS',
@@ -121,7 +121,7 @@ CALl add_member('ShinRyuJin', 'lb0002KO','gr00000002',
 
 CALl add_member('OhBaekwon', 'lb0002KO','gr00000003',
     'О Хэвон', 'Хэвон',
-    '2003-02-25', 'Korean',
+    '2003-02-25', 'Korea',
     'Incheon', 'descr5.txt', 163);
 
 CALl add_member('Kyujin', 'lb0002KO','gr00000003',

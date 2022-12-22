@@ -6,6 +6,10 @@ AS $$
         digit_id VARCHAR(8);
         generate_digit_id TEXT;
 BEGIN
+    IF (SELECT role_id FROM account
+        JOIN member_group ON account.account_login
+                                 = member_group.group_manager
+        WHERE group_id = NEW.group_id) = 1 THEN
     generate_digit_id := (SELECT nextval('generate_forum_id'))::TEXT;
     digit_id := lpad(generate_digit_id::TEXT, 8, '0');
     set_group_name := (SELECT group_name FROM member_group
@@ -16,6 +20,7 @@ BEGIN
             concat('Hello, it''s ', set_group_name),
             NEW.group_id);
     RETURN NULL;
+    END IF;
 END;$$;
 
 CREATE OR REPLACE TRIGGER add_forum_trigger

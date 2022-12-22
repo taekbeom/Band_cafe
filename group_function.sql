@@ -14,8 +14,6 @@ DECLARE
     new_group_debut_date DATE;
     new_group_disband_date DATE;
 BEGIN
-    generate_digit_id := (SELECT nextval('generate_group_id'))::TEXT;
-    digit_id := lpad(generate_digit_id, 8, '0');
     IF (is_date(new_group_debut) AND
         to_date(new_group_debut, 'yyyy-mm-dd') IS NOT NULL) THEN
         new_group_debut_date := to_date(new_group_debut, 'yyyy-mm-dd');
@@ -30,6 +28,8 @@ BEGIN
     IF (SELECT COUNT(*) FROM account
                         WHERE account_login = manager_login) = 1
         AND new_group_debut_date IS NOT NULL THEN
+    generate_digit_id := (SELECT nextval('generate_group_id'))::TEXT;
+    digit_id := lpad(generate_digit_id, 8, '0');
         INSERT INTO member_group
     VALUES (concat('gr', digit_id),
             new_group_name, new_group_country, new_group_debut_date,
