@@ -17,6 +17,7 @@ CREATE ROLE admin_role;
 GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA public
     TO admin_role, manager_role, member_role, user_role;
 
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin_role;
 
 GRANT INSERT, UPDATE, DELETE ON
     account, profile, shopping_order,shopping_cart,
@@ -537,19 +538,23 @@ USING (
 
 CREATE POLICY post_policy_dlt_all ON post
     FOR DELETE
-TO user_role
+TO manager_role, user_role
 USING (author_login = CURRENT_USER);
 
 CREATE POLICY post_policy_dlt_thread ON post
     FOR DELETE
-TO manager_role, member_role
+TO member_role
 USING (
     author_login = CURRENT_USER
     OR
-    EXISTS(SELECT 1 FROM post
-    WHERE reply_post_id = (
-        SELECT post_id FROM post WHERE author_login = CURRENT_USER
-        ))
+    (reply_post_id IS NOT NULL
+    AND
+    (SELECT forum.forum_id FROM forum
+    JOIN member_group ON forum.group_id = member_group.group_id
+    JOIN member ON member_group.group_id = member.group_id
+    JOIN member_profile ON member.member_id = member_profile.member_id
+    JOIN profile ON member_profile.profile_id = profile.profile_id
+    WHERE account_login = CURRENT_USER) = post.forum_id)
     );
 
 CREATE POLICY member_role_upd_manager ON account

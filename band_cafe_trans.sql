@@ -39,8 +39,6 @@ BEGIN
     ELSE
         RAISE NOTICE 'Check failed';
     END IF;
-    PERFORM setval('generate_forum_id',
-        (substring(set_forum_id FROM 3 FOR 8)::INTEGER), FALSE);
     END IF;
     END IF;
 END;$$;

@@ -122,17 +122,12 @@ END;$$;
 CREATE OR REPLACE PROCEDURE delete_member(dlt_member_id VARCHAR(12))
 LANGUAGE plpgsql
 AS $$
+    DECLARE set_account_login VARCHAR(32);
 BEGIN
-    EXECUTE FORMAT('REVOKE member_role FROM %I',
-        (SELECT account_login FROM profile
+        set_account_login := (SELECT account_login FROM profile
     JOIN member_profile ON profile.profile_id =
                            member_profile.profile_id
-    WHERE member_id = dlt_member_id));
-    EXECUTE FORMAT('GRANT user_role TO %I',
-        (SELECT account_login FROM profile
-    JOIN member_profile ON profile.profile_id =
-                           member_profile.profile_id
-    WHERE member_id = dlt_member_id));
+    WHERE member_id = dlt_member_id);
     UPDATE account
     SET role_id = 3
     WHERE account_login = (SELECT account_login FROM profile
@@ -145,6 +140,10 @@ BEGIN
     WHERE member_id = dlt_member_id;
     DELETE FROM member
     WHERE member_id = dlt_member_id;
+        EXECUTE FORMAT('REVOKE member_role FROM %I',
+        set_account_login);
+    EXECUTE FORMAT('GRANT user_role TO %I',
+        set_account_login);
     COMMIT;
 END;$$;
 

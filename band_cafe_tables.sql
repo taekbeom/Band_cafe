@@ -43,11 +43,11 @@ CREATE TABLE IF NOT EXISTS shopping_cart(
 
 CREATE TABLE IF NOT EXISTS member_group(
     group_id VARCHAR(10) PRIMARY KEY,
-    group_name VARCHAR(128) NOT NULL,
+    group_name VARCHAR(128) NOT NULL UNIQUE,
     group_country VARCHAR(64) NOT NULL,
     group_debut_date DATE NOT NULL,
     group_disband_date DATE DEFAULT NULL,
-    group_fandom_name VARCHAR(128) DEFAULT NULL,
+    group_fandom_name VARCHAR(128) DEFAULT NULL UNIQUE,
     group_description_source TEXT NOT NULL,
     group_manager VARCHAR(32) NOT NULL REFERENCES account(account_login) ON UPDATE CASCADE
 );
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS shopping_order(
 
 CREATE TABLE IF NOT EXISTS group_label(
     label_id VARCHAR(8) PRIMARY KEY,
-    label_name VARCHAR(128) NOT NULL,
+    label_name VARCHAR(128) NOT NULL UNIQUE,
     label_director VARCHAR(128) NOT NULL,
     label_country VARCHAR(64) NOT NULL,
     label_city VARCHAR(64) NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE IF NOT EXISTS song(
 
 CREATE TABLE IF NOT EXISTS forum(
     forum_id VARCHAR(10) PRIMARY KEY,
-    forum_name TEXT NOT NULL,
+    forum_name TEXT NOT NULL UNIQUE,
     forum_description VARCHAR(64) NOT NULL,
     group_id VARCHAR(10) UNIQUE NOT NULL REFERENCES member_group(group_id) ON UPDATE CASCADE
 );

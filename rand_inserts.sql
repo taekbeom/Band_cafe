@@ -72,6 +72,10 @@ CALL add_group('LE SSERAFIM', 'Korea',
     '2022-05-02', 'FEARNOT',
     'desc4.txt', 'sanyacomeback');
 
+CALL add_group('LE SSERAFIM', 'Korea',
+    '2022-05-02', 'FEARNOT',
+    'desc4.txt', 'angela_soup');
+
 CALL add_album('gr00000004', 'IT''Z ME',
     '2020-03-09');
 
@@ -134,14 +138,15 @@ CALl add_member('Winteo', 'lb0001KO','gr00000001',
     '2001-01-01', 'Korea',
     'Busan', 'descr7.txt');
 
-CALl add_member('riri', 'lb0001KO', 'gr00000001',
+CALl add_member('riri', 'lb0008KO', 'gr00000001',
     'Учинага Эри', 'Жизель',
     '2000-10-30', 'Korea',
     'Garosu-gil', 'descr8.txt', 163);
 
-CALL add_post('fr00010001', 'Winteo',
+CALL add_post('fr00000001', 'cool_oxi',
     'I''m sick of AI', null, null,
     7);
+
 CALL add_post('fr00010001', 'oksusma',
     ':peeposad:', '/pepega.png',
     'f6a0843ed85441f8bb02ce251d4ca150');

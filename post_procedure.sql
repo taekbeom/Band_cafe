@@ -74,10 +74,13 @@ BEGIN
     END IF;
 END;$$;
 
-CREATE OR REPLACE PROCEDURE delete_post(dlt_post_id VARCHAR(32))
+CREATE OR REPLACE PROCEDURE delete_post(dlt_post_id VARCHAR(32),
+dlt_author_login VARCHAR(32))
 LANGUAGE plpgsql
 AS $$
 BEGIN
+    IF (SELECT COUNT(*) FROM post WHERE author_login = dlt_author_login
+                        AND post_id = dlt_post_id) = 1 THEN
     IF (SELECT reply_post_id FROM post
                              WHERE post_id = dlt_post_id) IS NULL THEN
         DELETE FROM post WHERE reply_post_id = dlt_post_id;
@@ -88,8 +91,8 @@ BEGIN
     ELSE
         UPDATE post
         SET post_text = 'Cообщение удалено',
-        post_image_source = NULL,
-        author_login = NULL
+        post_image_source = NULL
         WHERE post_id = dlt_post_id;
+    END IF;
     END IF;
 END;$$;

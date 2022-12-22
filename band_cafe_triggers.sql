@@ -10,8 +10,9 @@ BEGIN
         JOIN member_group ON account.account_login
                                  = member_group.group_manager
         WHERE group_id = NEW.group_id) = 1 THEN
-    generate_digit_id := (SELECT nextval('generate_forum_id'))::TEXT;
-    digit_id := lpad(generate_digit_id::TEXT, 8, '0');
+    generate_digit_id := COALESCE((SELECT MAX(substring(forum_id FROM 3 FOR 8)::INTEGER)
+                                   FROM forum) + 1, 1)::TEXT;
+    digit_id := lpad(generate_digit_id, 8, '0');
     set_group_name := (SELECT group_name FROM member_group
     WHERE group_id = NEW.group_id);
     INSERT INTO forum
