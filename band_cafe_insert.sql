@@ -22,14 +22,14 @@ VALUES (0, 'leader'),
        (12, 'lead dancer');
 
 INSERT INTO post_category
-VALUES (0, '#animal'),
-       (1, '#work'),
-       (2, '#family'),
-       (3, '#hobbby'),
-       (4, '#news'),
-       (5, '#food'),
-       (6, '#travel'),
-       (7, '#health'),
-       (8, '#art'),
-       (9, '#practice'),
-       (10, '#music');
+VALUES (1, '#animal'),
+       (2, '#work'),
+       (3, '#family'),
+       (4, '#hobbby'),
+       (5, '#news'),
+       (6, '#food'),
+       (7, '#travel'),
+       (8, '#health'),
+       (9, '#art'),
+       (10, '#practice'),
+       (11, '#music');
