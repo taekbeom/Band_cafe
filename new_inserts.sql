@@ -1681,9 +1681,76 @@ CALL add_member_position('mmbr00000112', 1);
 
 
 
+CALL add_merch('angela_soup',
+    'Подушка Дакимакура Экспа Aespa',
+    1099,20, 'merch_desc1.jpg',
+    'gr00000001');
+CALL add_merch('angela_soup',
+    'bts товары блокнот бтс k-pop товары stray kids стрэй кидс',
+    271,35, 'merch_desc2.jpg',
+    'gr00000001');
+CALL add_merch('angela_soup',
+    'Наклейка на банковскую карту Itzy',
+    197, 100, 'merch_desc3.jpg',
+    'gr00000002');
+CALL add_merch('kirill_why',
+    'Kpop NMIXX ENTWURF AD ковер PICK LA фотокарточки альбом Lomo карты',
+    2130,15, 'merch_desc4.jpg',
+    'gr00000003');
+CALL add_merch('kirill_why',
+    'Kpop Nmixx карты',
+    310,70, 'merch_desc5.jpg',
+    'gr00000003');
 
+CALL add_merch('sanyacomeback',
+    'Новый постер Kpop LE SSERAFIM 2 шт./компл. оптом, Бесстрашная' ||
+    ' HD-фотография, картина для комнаты, домашний декор, настенная фотография',
+    173,55, 'merch_desc6.jpg',
+    'gr00000004');
+CALL add_merch('sanyacomeback',
+    'Kpop LE SSERAFIM антихрупкий Новый журавль бесстрашные ломо-карты ' ||
+    'для девочек Фотокарточка Милая печатная карточка постер Поклонники подарок',
+    266,99, 'merch_desc7.jpg',
+    'gr00000004');
+CALL add_merch('kursovaya_joined_chat',
+    'Кружка Живи ради TWICE ТВАЙС K-pop к-поп kpop',
+    809,23, 'merch_desc8.jpg',
+    'gr00000005');
+CALL add_merch('kursovaya_joined_chat',
+    'Рюкзак TWICE черный с цепью №3',
+    788,30, 'merch_desc9.jpg',
+    'gr00000005');
+CALL add_merch('kursovaya_joined_chat',
+    'Kpop Idol (G)I-DLE акриловый брелок для девочек, подвеска' ||
+    ' для сумки, украшение для рюкзака, брелок для ключей, аксессуары',
+    193,13, 'merch_desc10.jpg',
+    'gr00000012');
+CALL add_merch('angela_soup',
+    'РАСПИСАНИЕ УРОКОВ БЛЭКПИНК - BLACKPINK № 1',
+    110,79, 'merch_desc11.jpg',
+    'gr00000006');
+CALL add_merch('kirill_why',
+    'Студенческая идентификационная карточка LEESEO ei YUJIN ' ||
+    'LIZ GAEUL, ПВХ именные карточки для фанатов, коллекционная Подарочная' ||
+    ' карточка для косплея',
+    56,49, 'merch_desc12.jpg',
+    'gr00000007');
+CALL add_merch('angela_soup',
+    'Бан Чан Стрей Кидс Stray Kids ростовая фигура',
+    3947,37, 'merch_desc13.jpg',
+    'gr00000014');
+CALL add_merch('angela_soup',
+    'Деревянные 3D лампы Kpop aespa, декоративный Настольный' ||
+    ' прикроватный светильник, ночсветильник в стиле аниме, декор для спальни, ' ||
+    'неоновая вывессветильник, s-Декор',
+    388,3, 'merch_desc14.jpg',
+    'gr00000001');
+CALL add_merch('v1rh2t3r4v',
+    'Тетрадь на клею TXT / Tomorrow X Together',
+    567,56, 'merch_desc15.jpg',
+    'gr00000013');
 
-
+SELECT * FROM merch;
 -- CALL add_post('fr00000001', 'cool_oxi',
 --     'I''m sick of AI', null, null,
 --     7);
