@@ -50,7 +50,7 @@ BEGIN
             WHERE order_id = upd_order_id;
         IF (select_confirm) AND
         (SELECT user_money FROM shopping_cart
-        INNER JOIN shopping_order ON shopping_cart.shopping_cart_id =
+         JOIN shopping_order ON shopping_cart.shopping_cart_id =
                                      shopping_order.shopping_cart_id
         WHERE order_id = upd_order_id) >=
         (SELECT order_amount FROM shopping_order

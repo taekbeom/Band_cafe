@@ -54,3 +54,8 @@ BEGIN
     EXCEPTION WHEN OTHERS THEN
     RETURN FALSE;
 END;$$;
+
+CREATE INDEX profile_id_index ON profile(profile_id);
+EXPLAIN ANALYSE SELECT profile_id FROM profile
+WHERE profile_id IN ('id00000999', 'id00000991',
+'id00000009','id00000992','id00000929','id00000939');

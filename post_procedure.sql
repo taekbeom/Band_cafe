@@ -12,6 +12,12 @@ BEGIN
     IF new_reply_post_id IS NOT NULL AND length(new_reply_post_id) = 0 THEN
             new_reply_post_id := NULL;
         END IF;
+    IF new_post_image IS NOT NULL AND length(new_post_image) = 0 THEN
+            new_post_image := NULL;
+        END IF;
+    IF new_category_id = 99 THEN
+            new_category_id := NULL;
+        END IF;
     IF (SELECT COUNT(*) FROM forum
                         WHERE forum_id = set_forum_id) > 0
     AND (SELECT COUNT(*) FROM account
